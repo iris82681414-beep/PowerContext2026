@@ -166,6 +166,7 @@ from powercontext.builtin.runtime._scope_cache import (
     ScopeCacheObserver,
     ScopeEvictor,
 )
+from powercontext.builtin.runtime.context_pack import ContextPack, ContextPackDelta
 from powercontext.builtin.runtime.decision_model import DecisionModel
 from powercontext.builtin.runtime.errors import InvalidRuntimeRequestError, TopicMemoryProcessingUnavailableError
 from powercontext.builtin.runtime.models import (
@@ -827,6 +828,22 @@ class ScopedContextApplication:
     def __init__(self, runtime: BuiltinRuntime, scope_id: str) -> None:
         self._runtime = runtime
         self.scope_id = validate_scope_id(scope_id)
+
+    async def prepare_incremental(
+        self,
+        request: PrepareContextRequest,
+        /,
+        *,
+        base_pack: ContextPack | None = None,
+    ) -> ContextPack | ContextPackDelta:
+        """Prepare an independently replayable full pack or delta."""
+        prepared = await self.prepare(request)
+        target = ContextPack.from_content(prepared.content or "")
+        if base_pack is None:
+            return target
+        if ContextPack.build(base_pack.items) != base_pack:
+            raise ValueError("invalid base context pack")  # noqa: TRY003 - public pack contract
+        return ContextPackDelta.between(base_pack, target)
 
     async def prepare(
         self,
@@ -2619,7 +2636,7 @@ class ScopedTopicMemoryApplication:
         self._runtime = runtime
         self.scope_id = validate_scope_id(scope_id)
 
-    async def search(
+    async def search(  # noqa: C901 - search admission, backend, and lifecycle gating
         self,
         request: SearchTopicMemoryRequest,
         /,
@@ -2666,6 +2683,18 @@ class ScopedTopicMemoryApplication:
                     admission,
                     query_embedding,
                     embedding_timeout_seconds,
+                )
+        if self._runtime.lifecycle is not None and result.hits:
+            unavailable = await self._runtime.lifecycle.for_scope(self.scope_id).unavailable_topics()
+            if unavailable:
+                result = result.model_copy(
+                    update={
+                        "hits": tuple(
+                            hit
+                            for hit in result.hits
+                            if (hit.artifact_ref.artifact_id, hit.artifact_ref.revision) not in unavailable
+                        )
+                    }
                 )
         observer = self._runtime._topic_memory_search_observer
         if observer is not None:
@@ -3063,6 +3092,7 @@ class BuiltinRuntime:
         self._topic_memory_embedding_model = topic_memory_embedding_model
         self._topic_memory_processing_available = topic_memory_processing_available
         self._topic_memory_search_observer = topic_memory_search_observer
+        self.lifecycle = None
         self._external_skill_registry = external_skill_registry
         self._external_skill_importer = external_skill_importer
         self._skill_publication_service = skill_publication_service

@@ -354,7 +354,7 @@ def _configured_memory_write_gate(
 
 
 @asynccontextmanager
-async def open_builtin_runtime(
+async def open_builtin_runtime(  # noqa: C901 - runtime component assembly
     config: BuiltinConfig,
     *,
     scheduler_path: str | Path = "powercontext.scheduler.db",
@@ -656,6 +656,28 @@ async def open_builtin_runtime(
         runtime.artifact_processing_supervisor = await resources.enter_async_context(
             _open_artifact_processing_supervisor(config, contexts, processing_bindings, tracing=tracing)
         )
+        from powercontext.builtin.runtime.source_lifecycle import SourceLifecycleApplication
+
+        runtime.lifecycle = SourceLifecycleApplication(runtime, contexts.database)
+        original_topic_search = runtime._topic_memory_search
+        if original_topic_search is not None:
+
+            async def lifecycle_topic_search(scope_id, *args, **kwargs):
+                found = await original_topic_search(scope_id, *args, **kwargs)
+                unavailable = await runtime.lifecycle.for_scope(scope_id).unavailable_topics()
+                if not unavailable:
+                    return found
+                return found.model_copy(
+                    update={
+                        "hits": tuple(
+                            hit
+                            for hit in found.hits
+                            if (hit.artifact_ref.artifact_id, hit.artifact_ref.revision) not in unavailable
+                        )
+                    }
+                )
+
+            runtime._topic_memory_search = lifecycle_topic_search
         contexts.profiles.operation_context = runtime._operation
         if config.handoff_report.enabled:
             runtime.handoff_report = HandoffReportApplication(
@@ -720,7 +742,14 @@ def _artifact_processing_bindings(  # noqa: C901 - validate and assemble one reg
         "skill": None,
     }
     for family, schedule in automatic.items():
-        if schedule is not None and family not in declared | registered:
+        count_threshold = (
+            config.runtime.memory_source_count_threshold
+            if family == "memory"
+            else config.runtime.topic_memory_source_count_threshold
+            if family == "topic-memory"
+            else None
+        )
+        if (schedule is not None or count_threshold is not None) and family not in declared | registered:
             if (
                 family == "topic-memory"
                 and config.runtime.artifact_processing_families is None
@@ -779,6 +808,13 @@ def _artifact_processing_bindings(  # noqa: C901 - validate and assemble one reg
                 max_workers=getattr(config.runtime, f"{prefix}_max_workers"),
                 worker_timeout_seconds=getattr(config.runtime, f"{prefix}_worker_timeout_seconds"),
                 automatic_processing_interval=None if interval is None else timedelta(seconds=float(interval)),
+                source_count_threshold=(
+                    config.runtime.memory_source_count_threshold
+                    if family == "memory"
+                    else config.runtime.topic_memory_source_count_threshold
+                    if family == "topic-memory"
+                    else None
+                ),
                 cron=config.runtime.profile_cron
                 if family == "profile" and config.runtime.profile_schedule_enabled
                 else None,

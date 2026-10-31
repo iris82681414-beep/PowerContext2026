@@ -47,6 +47,7 @@ else:
     from multiprocessing.popen_spawn_posix import Popen as SpawnPopen
 
 from powercontext._logging import log_safely
+from powercontext.builtin.persistence.cursors import SourceCursorRepository
 from powercontext.builtin.persistence.database import AsyncDatabase
 from powercontext.builtin.persistence.errors import ArtifactProcessingLeadershipLostError
 from powercontext.builtin.persistence.processing_intents import ArtifactProcessingIntentRepository
@@ -57,7 +58,11 @@ from powercontext.builtin.persistence.supervision import (
     ArtifactProcessingLeaseRepository,
     database_utc_now,
 )
-from powercontext.builtin.persistence.tables import ARTIFACT_PROCESSING_INTENTS_TABLE, ARTIFACT_PROCESSING_LEASES_TABLE
+from powercontext.builtin.persistence.tables import (
+    ARTIFACT_PROCESSING_INTENTS_TABLE,
+    ARTIFACT_PROCESSING_LEASES_TABLE,
+    SOURCE_JOURNAL_HEADS_TABLE,
+)
 from powercontext.builtin.runtime.processing_contracts import (
     ArtifactProcessingWorkAssignment,
     ArtifactProcessingWorkerCompletion,
@@ -110,6 +115,7 @@ class ArtifactProcessingBinding:
     max_workers: int = 1
     worker_timeout_seconds: float = 600.0
     automatic_processing_interval: timedelta | None = None
+    source_count_threshold: int | None = None
     cron: str | None = None
     timezone: str = "Asia/Shanghai"
     config_prefix: str | None = None
@@ -118,7 +124,7 @@ class ArtifactProcessingBinding:
     # their own Worker authorization and domain completion semantics.
     automatic_scope_filter: Callable[[AsyncConnection, tuple[str, ...]], Awaitable[frozenset[str]]] | None = None
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> None:  # noqa: C901 - binding option validation
         if not self.binding_name or self.binding_name != self.binding_name.strip():
             raise ValueError("binding_name must be nonempty and trimmed")  # noqa: TRY003
         if re.fullmatch(r"[a-z][a-z0-9-]*", self.artifact_family) is None:
@@ -136,6 +142,10 @@ class ArtifactProcessingBinding:
                 raise ValueError("automatic interval must be positive")  # noqa: TRY003
             if self.cron is not None:
                 raise ValueError("interval and cron cannot both be enabled")  # noqa: TRY003
+        if self.source_count_threshold is not None and (
+            type(self.source_count_threshold) is not int or self.source_count_threshold < 1
+        ):
+            raise ValueError("source_count_threshold must be positive")  # noqa: TRY003
         if self.cron is not None:
             CronTrigger.from_crontab(self.cron, timezone=ZoneInfo(self.timezone))
 
@@ -393,6 +403,7 @@ class _FamilyState:
     retries: dict[str, _RetryState] = field(default_factory=dict)
     requested_after: int = 0
     scan_after: int = 0
+    count_after: int = 0
     scan_generation: int = 0
     scan_in_progress: bool = False
     reconcile_after: str | None = None
@@ -648,6 +659,8 @@ class ArtifactProcessingSupervisor:
                 state.next_discovery_at = loop.time() + _DISCOVERY_PAGE_DELAY_SECONDS
         else:
             state.reconcile_complete = True
+        if binding.source_count_threshold is not None:
+            await self._discover_count(state)
         # Alternate discovery channels so explicit traffic cannot monopolize admission.
         state.automatic_next = not state.automatic_next
         if state.automatic_next:
@@ -656,6 +669,37 @@ class ArtifactProcessingSupervisor:
         else:
             await self._discover_requested(state)
             await self._discover_automatic(state)
+
+    async def _discover_count(self, state: _FamilyState) -> None:
+        """Accept one family invocation after enough unconsumed journal identities."""
+        threshold = state.binding.source_count_threshold
+        if threshold is None:
+            return
+        binding_name = state.binding.binding_name
+        async with self._database.transaction() as connection:
+            await self._leases.require_fence(connection, self._require_current_fence())
+            rows = await self._intents.scan(
+                connection, binding_name, after_sequence=state.count_after, limit=_DISCOVERY_PAGE_SIZE
+            )
+            cursors = SourceCursorRepository()
+            for row in rows:
+                state.count_after = row.pending_sequence
+                if row.scope_id in state.running or row.scope_id in state.queued or row.scope_id in state.retries:
+                    continue
+                if row.requested_generation > row.handled_generation:
+                    continue
+                high = await connection.scalar(
+                    select(SOURCE_JOURNAL_HEADS_TABLE.c.position).where(
+                        SOURCE_JOURNAL_HEADS_TABLE.c.scope_id == row.scope_id
+                    )
+                )
+                cursor = await cursors.load(connection, row.scope_id, binding_name)
+                consumed = 0 if cursor is None else cursor.cursor.sequence
+                if int(high or 0) - consumed >= threshold:
+                    await self._intents.request(connection, row.scope_id, binding_name)
+                    state.discovery_pending = True
+        if len(rows) < _DISCOVERY_PAGE_SIZE:
+            state.count_after = 0
 
     async def _discover_requested(self, state: _FamilyState) -> None:
         capacity = self._fresh_capacity(state)
@@ -1081,6 +1125,8 @@ class ArtifactProcessingSupervisor:
         now = asyncio.get_running_loop().time()
         deadlines: list[float] = []
         for state in self._families.values():
+            if state.binding.source_count_threshold is not None:
+                deadlines.append(now + 0.5)
             if len(state.running) >= state.binding.max_workers:
                 continue
             deadlines.extend(
@@ -1147,7 +1193,7 @@ def _schedule_deadline(
     trigger = CronTrigger.from_crontab(binding.cron, timezone=ZoneInfo(binding.timezone))
     first = trigger.get_next_fire_time(None, (checkpoint + timedelta(microseconds=1)).replace(tzinfo=UTC))
     if first is None:
-        return None, datetime.max.replace(tzinfo=None)
+        return None, datetime.max.replace(tzinfo=None)  # noqa: DTZ901 - schedule stores naive UTC
     first = first.astimezone(UTC).replace(tzinfo=None)
     if first > now:
         return None, first
@@ -1164,7 +1210,7 @@ def _schedule_deadline(
         else:
             hi = mid
     following = trigger.get_next_fire_time(None, (latest + timedelta(microseconds=1)).replace(tzinfo=UTC))
-    return latest, datetime.max.replace(tzinfo=None) if following is None else following.astimezone(UTC).replace(
+    return latest, datetime.max.replace(tzinfo=None) if following is None else following.astimezone(UTC).replace(  # noqa: DTZ901 - schedule stores naive UTC
         tzinfo=None
     )
 

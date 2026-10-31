@@ -98,6 +98,102 @@ ORDER BY l2_distance(m.embedding, :query_vector) APPROXIMATE
 LIMIT :candidate_limit
 """
 
+_OCEANBASE_HYBRID_SQL = """
+SELECT * FROM (
+    SELECT 'fts' AS channel,
+           f.memory_artifact_id, f.head_revision, f.entry_id, f.entry_version_id,
+           v.text, NULL AS distance,
+           MATCH(f.searchable_text) AGAINST (:analyzed_query IN NATURAL LANGUAGE MODE) AS relevance
+    FROM pc_memory_entry_heads AS f
+    JOIN pc_memory_entry_versions AS v
+      ON v.scope_id = f.scope_id
+     AND v.memory_artifact_id = f.memory_artifact_id
+     AND v.entry_version_id = f.entry_version_id
+    WHERE f.scope_id = :scope_id
+      AND f.memory_artifact_id IN :memory_artifact_ids
+      AND MATCH(f.searchable_text) AGAINST (:analyzed_query IN NATURAL LANGUAGE MODE)
+      {fts_tag_filter}
+    ORDER BY relevance DESC, f.memory_artifact_id, f.entry_id, f.entry_version_id
+    LIMIT :candidate_limit
+) AS lexical
+UNION ALL
+SELECT * FROM (
+    SELECT 'vector' AS channel,
+           m.memory_artifact_id, m.head_revision, m.entry_id, m.entry_version_id,
+           v.text, l2_distance(m.embedding, :query_vector) AS distance,
+           NULL AS relevance
+    FROM pc_memory_vector_entries AS m
+    JOIN pc_memory_entry_versions AS v
+      ON v.scope_id = m.scope_id
+     AND v.memory_artifact_id = m.memory_artifact_id
+     AND v.entry_version_id = m.entry_version_id
+    WHERE m.scope_id = :scope_id
+      AND m.memory_artifact_id IN :memory_artifact_ids
+      {vector_tag_filter}
+    ORDER BY l2_distance(m.embedding, :query_vector) APPROXIMATE
+    LIMIT :candidate_limit
+) AS semantic
+"""
+
+
+async def search_oceanbase_hybrid(
+    connection: AsyncConnection, scope_id: str, request: MemorySearchRequest
+) -> MemorySearchChannels:
+    """Read both native indexes in one candidate statement, preserving channel order."""
+    if request.query_vector is None or request.embedding_profile is None:
+        raise CapabilityNotSupportedError("hybrid")
+    tag = request.tag_filter
+    sql = _OCEANBASE_HYBRID_SQL.format(
+        fts_tag_filter="" if tag is None else memory_tag_sql("f"),
+        vector_tag_filter="" if tag is None else memory_tag_sql("m"),
+    )
+    statement = text(sql).bindparams(
+        bindparam("memory_artifact_ids", expanding=True),
+        bindparam("query_vector", type_=VECTOR(request.embedding_profile.dimension)),
+        *(() if tag is None else (bindparam("tag_keys", expanding=True), bindparam("tag_hashes", expanding=True))),
+    )
+    rows = (
+        (
+            await connection.execute(
+                statement,
+                {
+                    "scope_id": scope_id,
+                    "memory_artifact_ids": tuple(memory.artifact_id for memory in request.memories),
+                    "query_vector": validate_embedding(
+                        request.query_vector, dimension=request.embedding_profile.dimension
+                    ),
+                    "analyzed_query": request.analyzed_query,
+                    "candidate_limit": request.candidate_limit,
+                    **memory_tag_parameters(tag),
+                },
+            )
+        )
+        .mappings()
+        .all()
+    )
+    lexical = sorted(
+        (row for row in rows if row["channel"] == "fts"),
+        key=lambda row: (
+            -float(row["relevance"]),
+            str(row["memory_artifact_id"]),
+            str(row["entry_id"]),
+            str(row["entry_version_id"]),
+        ),
+    )
+    semantic = sorted(
+        (row for row in rows if row["channel"] == "vector"),
+        key=lambda row: (
+            float(row["distance"]),
+            str(row["memory_artifact_id"]),
+            str(row["entry_id"]),
+            str(row["entry_version_id"]),
+        ),
+    )
+    return MemorySearchChannels(
+        fts=memory_channel_hits(lexical, request.memories),
+        vector=memory_channel_hits(semantic, request.memories),
+    )
+
 
 class OceanBaseMemoryFTSIndex:
     """OceanBase FULLTEXT strategy over the relational active-head projection."""

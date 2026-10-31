@@ -17,6 +17,8 @@
 from __future__ import annotations
 
 import json
+import re
+from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass, replace
 from itertools import chain
@@ -106,6 +108,7 @@ class PreparedContextBuild:
     origins: tuple[PreparedContextOrigin, ...]
     omissions: PreparedContextOmissions = PreparedContextOmissions()
     code_origins: tuple[CodeEvidenceRef, ...] = ()
+    fragments: tuple[MemoryEvidenceFragment, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -115,6 +118,16 @@ class MemoryEntryAddress:
     memory: ArtifactAddress
     entry_id: str
     entry_version_id: str
+
+
+@dataclass(frozen=True)
+class MemoryEvidenceFragment:
+    """An exact original-character span from a cited Memory entry."""
+
+    address: MemoryEntryAddress
+    start: int
+    end: int
+    text: str
 
 
 PreparedContextOrigin = MemoryCitation | ArtifactRef | MemoryEntryAddress | ArtifactAddress
@@ -230,6 +243,8 @@ class PreparedContextBuilder:
 
         if sum(len(candidates.hits) for candidates in memory_candidates) > self.memory_candidate_limit:
             raise PreparedContextInvariantError("memory-candidate-limit")
+        if request.evidence_selection and request.assembly is None:
+            return self._select_evidence_fragments(request, current_scope_id, memory_candidates)
         if len(topic_memory_hits) > self.topic_memory_candidate_limit:
             raise PreparedContextInvariantError("topic-memory-candidate-limit")
         if sum(len(candidates.hits) for candidates in experience_candidates) > self.experience_candidate_limit:
@@ -254,6 +269,100 @@ class PreparedContextBuilder:
             context=PreparedContext(status="ready", content=content, content_bytes=content_bytes),
             origins=origins,
             omissions=omissions,
+        )
+
+    def _select_evidence_fragments(  # noqa: C901 - sentence selection and wire-budget constraints
+        self,
+        request: PrepareContextRequest,
+        current_scope_id: str | None,
+        candidates: Sequence[PreparedMemoryCandidates],
+    ) -> PreparedContextBuild:
+        """Choose literal sentence spans by query overlap under the full wire budget."""
+        query_terms = Counter(re.findall(r"[a-z]+|\d+", request.query.casefold()))
+        common = {
+            "the",
+            "and",
+            "for",
+            "with",
+            "that",
+            "this",
+            "from",
+            "are",
+            "was",
+            "were",
+            "does",
+            "which",
+            "what",
+            "how",
+            "can",
+            "has",
+            "have",
+            "its",
+            "of",
+            "in",
+            "to",
+            "a",
+            "an",
+            "is",
+            "as",
+            "by",
+            "on",
+            "or",
+        }
+        terms = {word for word in query_terms if word not in common and len(word) > 2}
+        ranked: list[tuple[float, int, MemoryEvidenceFragment]] = []
+        position = 0
+        for group in candidates:
+            for hit in group.hits:
+                if group.memory_ref is None or hit.memory_ref != group.memory_ref:
+                    raise PreparedContextInvariantError("memory-ref-mismatch")
+                scope_id = group.scope_id or current_scope_id
+                if not scope_id:
+                    raise PreparedContextInvariantError("text-scope-missing")
+                address = MemoryEntryAddress(
+                    memory=ArtifactAddress(scope_id=scope_id, artifact=hit.memory_ref),
+                    entry_id=hit.entry_id,
+                    entry_version_id=hit.entry_version_id,
+                )
+                text = hit.text
+                # Keep exact offsets: the separator belongs to the preceding sentence.
+                starts = [0, *(match.end() for match in re.finditer(r"(?<=[.!?])\s+|\n+", text))]
+                ends = [*starts[1:], len(text)]
+                for start, end in zip(starts, ends, strict=True):
+                    while start < end and text[start].isspace():
+                        start += 1
+                    while end > start and text[end - 1].isspace():
+                        end -= 1
+                    if start == end:
+                        continue
+                    # Very long clauses are split at character boundaries; no text is rewritten.
+                    for sub_start in range(start, end, 550):
+                        sub_end = min(end, sub_start + 550)
+                        fragment = MemoryEvidenceFragment(address, sub_start, sub_end, text[sub_start:sub_end])
+                        words = Counter(re.findall(r"[a-z]+|\d+", fragment.text.casefold()))
+                        overlap = sum(min(words[word], query_terms[word]) for word in terms)
+                        rare = sum(1.0 / (1 + words[word]) for word in terms if word in words)
+                        score = overlap * 3 + rare + 0.05 / (1 + position)
+                        ranked.append((score, position, fragment))
+                        position += 1
+        ranked.sort(key=lambda item: (-item[0], item[1]))
+        selected: list[MemoryEvidenceFragment] = []
+        rendered: str | None = None
+        for _, _, fragment in ranked:
+            if len(selected) >= self.entry_limit:
+                break
+            trial = [*selected, fragment]
+            text = _render_evidence_fragments(trial)
+            if len(text.encode("utf-8")) > request.max_bytes:
+                continue
+            selected.append(fragment)
+            rendered = text
+        if rendered is None:
+            return PreparedContextBuild(context=self.empty(), origins=(), fragments=())
+        return PreparedContextBuild(
+            context=PreparedContext(status="ready", content=rendered, content_bytes=len(rendered.encode("utf-8"))),
+            origins=tuple(fragment.address for fragment in selected),
+            fragments=tuple(selected),
         )
 
     def probe_budget(
@@ -691,6 +800,25 @@ def _render(entries: Sequence[_PreparedContextEntry]) -> str:
         "items": [_render_entry(entry) for entry in entries],
     }
     encoded = json.dumps(envelope, ensure_ascii=False, separators=(",", ":"))
+    return "\n\n".join((TRUST_POLICY, f"{_BEGIN_MARKER}\n{encoded}\n{_END_MARKER}"))
+
+
+def _render_evidence_fragments(fragments: Sequence[MemoryEvidenceFragment]) -> str:
+    items = []
+    for fragment in fragments:
+        address = fragment.address
+        items.append({
+            "citation": {
+                "scope_id": address.memory.scope_id,
+                "memory_ref": address.memory.artifact.model_dump(mode="json"),
+                "entry_id": address.entry_id,
+                "entry_version_id": address.entry_version_id,
+            },
+            "content": fragment.text,
+            "start": fragment.start,
+            "end": fragment.end,
+        })
+    encoded = json.dumps({"trust": "untrusted_history", "items": items}, ensure_ascii=False, separators=(",", ":"))
     return "\n\n".join((TRUST_POLICY, f"{_BEGIN_MARKER}\n{encoded}\n{_END_MARKER}"))
 
 

@@ -247,6 +247,17 @@ class CompositeMemoryIndex:
         request: MemorySearchRequest,
         /,
     ) -> MemorySearchChannels:
+        if connection.dialect.name == "mysql" and request.mode == "hybrid":
+            from powercontext.builtin.persistence.oceanbase.memory_index import (
+                OceanBaseMemoryFTSIndex,
+                OceanBaseMemoryVectorIndex,
+                search_oceanbase_hybrid,
+            )
+
+            if any(isinstance(index, OceanBaseMemoryFTSIndex) for index in self.indexes) and any(
+                isinstance(index, OceanBaseMemoryVectorIndex) for index in self.indexes
+            ):
+                return await search_oceanbase_hybrid(connection, scope_id, request)
         fts: tuple[MemoryChannelHit, ...] = ()
         vector: tuple[MemoryChannelHit, ...] = ()
         for index in self.indexes:
