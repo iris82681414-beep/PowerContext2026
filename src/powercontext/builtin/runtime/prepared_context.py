@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 from collections import Counter
 from collections.abc import Sequence
@@ -278,7 +279,7 @@ class PreparedContextBuilder:
         candidates: Sequence[PreparedMemoryCandidates],
     ) -> PreparedContextBuild:
         """Choose literal sentence spans by query overlap under the full wire budget."""
-        query_terms = Counter(re.findall(r"[a-z]+|\d+", request.query.casefold()))
+        query_terms = Counter(_evidence_terms(request.query))
         common = {
             "the",
             "and",
@@ -310,7 +311,7 @@ class PreparedContextBuilder:
             "or",
         }
         terms = {word for word in query_terms if word not in common and len(word) > 2}
-        ranked: list[tuple[float, int, MemoryEvidenceFragment]] = []
+        candidates_by_sentence: list[tuple[int, MemoryEvidenceFragment, Counter[str]]] = []
         position = 0
         for group in candidates:
             for hit in group.hits:
@@ -335,16 +336,34 @@ class PreparedContextBuilder:
                         end -= 1
                     if start == end:
                         continue
-                    # Very long clauses are split at character boundaries; no text is rewritten.
-                    for sub_start in range(start, end, 550):
-                        sub_end = min(end, sub_start + 550)
+                    # Keep ordinary sentences intact so a whole evidence span can be cited.
+                    # Only exceptionally long spans need bounded literal chunks.
+                    chunk_size = end - start if end - start <= 1200 else 800
+                    for sub_start in range(start, end, chunk_size):
+                        sub_end = min(end, sub_start + chunk_size)
                         fragment = MemoryEvidenceFragment(address, sub_start, sub_end, text[sub_start:sub_end])
-                        words = Counter(re.findall(r"[a-z]+|\d+", fragment.text.casefold()))
-                        overlap = sum(min(words[word], query_terms[word]) for word in terms)
-                        rare = sum(1.0 / (1 + words[word]) for word in terms if word in words)
-                        score = overlap * 3 + rare + 0.05 / (1 + position)
-                        ranked.append((score, position, fragment))
+                        candidates_by_sentence.append((position, fragment, Counter(_evidence_terms(fragment.text))))
                         position += 1
+        counts = Counter(word for _, _, words in candidates_by_sentence for word in words)
+        total = len(candidates_by_sentence)
+        average_length = sum(sum(words.values()) for _, _, words in candidates_by_sentence) / max(total, 1)
+        ranked: list[tuple[float, int, MemoryEvidenceFragment]] = []
+        for position, fragment, words in candidates_by_sentence:
+            length = sum(words.values())
+            normalization = 1.2 * (0.55 + 0.45 * length / max(average_length, 1))
+            score = sum(
+                min(query_terms[word], 2)
+                * math.log1p((total - counts[word] + 0.5) / (counts[word] + 0.5))
+                * words[word]
+                * 2.2
+                / (words[word] + normalization)
+                for word in terms & words.keys()
+            )
+            # Quantified observations often contain the detailed evidence behind
+            # a shorter claim-like conclusion; retain them when both match.
+            numerics = sum(count for word, count in words.items() if word.isdigit())
+            score *= 1.0 + 0.12 * min(numerics, 4)
+            ranked.append((score, position, fragment))
         ranked.sort(key=lambda item: (-item[0], item[1]))
         selected: list[MemoryEvidenceFragment] = []
         rendered: str | None = None
@@ -801,6 +820,22 @@ def _render(entries: Sequence[_PreparedContextEntry]) -> str:
     }
     encoded = json.dumps(envelope, ensure_ascii=False, separators=(",", ":"))
     return "\n\n".join((TRUST_POLICY, f"{_BEGIN_MARKER}\n{encoded}\n{_END_MARKER}"))
+
+
+def _evidence_terms(text: str) -> tuple[str, ...]:
+    """Normalize common inflections without relying on a model or external data."""
+    result = []
+    for word in re.findall(r"[a-z]+|\d+", text.casefold()):
+        if len(word) > 5 and word.endswith("ies"):
+            word = f"{word[:-3]}y"
+        elif len(word) > 6 and word.endswith("ing"):
+            word = word[:-3]
+        elif (len(word) > 5 and word.endswith("ed")) or (len(word) > 5 and word.endswith("es")):
+            word = word[:-2]
+        elif len(word) > 4 and word.endswith("s"):
+            word = word[:-1]
+        result.append(word)
+    return tuple(result)
 
 
 def _render_evidence_fragments(fragments: Sequence[MemoryEvidenceFragment]) -> str:

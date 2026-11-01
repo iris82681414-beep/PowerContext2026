@@ -124,7 +124,9 @@ class PDFTextProjection:
 PDF_PAGE_SOURCE_DEFINITION = AdapterSourceDefinition(PDFPageAdapter(), projections=(PDFTextProjection(),))
 
 
-async def search_pdf_pages(memory, question: str, limit: int = 10) -> tuple[MemoryCitation, ...]:
+async def search_pdf_pages(  # noqa: C901 - query expansion and bounded citation selection
+    memory, question: str, limit: int = 10
+) -> tuple[MemoryCitation, ...]:
     """Search persisted scoped Memory and return distinct exact page citations."""
     if type(limit) is not int or limit < 1:
         raise ValueError("limit must be positive")
@@ -167,16 +169,48 @@ async def search_pdf_pages(memory, question: str, limit: int = 10) -> tuple[Memo
     queries = [question]
     if terms:
         queries.append(" ".join(terms))
-        queries.extend(terms[: min(4, len(terms))])
     scores: dict[tuple[str, str], float] = {}
     hits_by_key = {}
+    candidate_limit = max(limit * 6, 120)
     for query in dict.fromkeys(queries):
-        page = await memory.search(SearchMemoryRequest(query=query, mode="fts", limit=max(limit * 3, 40)))
+        page = await memory.search(SearchMemoryRequest(query=query, mode="fts", limit=candidate_limit))
         for rank, hit in enumerate(page.hits, start=1):
             key = (hit.entry_id, hit.entry_version_id)
             scores[key] = scores.get(key, 0.0) + 1.0 / (rank + 20)
             hits_by_key[key] = hit
-    ordered = sorted(scores, key=lambda key: (-scores[key], key))[:limit]
+    broad_matches = sorted(scores, key=lambda key: (-scores[key], key))
+    # A whole-question FTS match favors pages that repeat the question's boilerplate.
+    # Reserve part of the result set for pages found by individual content words,
+    # including words late in a long question (e.g. a second financial statement).
+    broad_count = min(limit, max(1, round(limit * 0.6)))
+    ordered = list(broad_matches[:broad_count])
+    seen = set(ordered)
+    term_pages = []
+    for term in terms:
+        if not term.isalpha():
+            continue
+        page = await memory.search(SearchMemoryRequest(query=term, mode="fts", limit=candidate_limit))
+        # Very common words add little discrimination; extremely rare words tend
+        # to be instructions in the question rather than evidence in the report.
+        if 3 < len(page.hits) < candidate_limit:
+            term_pages.append((len(page.hits), term, page.hits))
+    for _, _, hits in sorted(term_pages, key=lambda item: -item[0]):
+        for hit in hits[:3]:
+            key = (hit.entry_id, hit.entry_version_id)
+            if key not in seen:
+                ordered.append(key)
+                seen.add(key)
+                hits_by_key[key] = hit
+                if len(ordered) == limit:
+                    break
+        if len(ordered) == limit:
+            break
+    for key in broad_matches:
+        if len(ordered) == limit:
+            break
+        if key not in seen:
+            ordered.append(key)
+            seen.add(key)
     return tuple(
         MemoryCitation(
             memory_ref=hits_by_key[key].memory_ref,
