@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>口袋资料库</title>
+  </head>
+  <body>
+    <main>
+      <header><p>端侧推理 · seekdb</p><h1>口袋资料库</h1><p>在浏览器为资料生成向量，在 seekdb 检索关键词和语义，直接读回原文。</p></header>
+      <section aria-label="知识库设置">
+        <label for="library">知识库</label>
+        <input id="library" value="my_library" maxlength="28" pattern="[a-z][a-z0-9_]{0,27}">
+        <button id="select">打开</button>
+        <output id="backend">等待初始化</output>
+        <p id="count"></p>
+      </section>
+      <section aria-label="导入资料">
+        <h2>导入资料</h2>
+        <label for="title">标题</label><input id="title" maxlength="160" placeholder="例如 实验记录">
+        <label for="text">原文</label><textarea id="text" rows="5" maxlength="100000" placeholder="粘贴文本"></textarea>
+        <label for="files">或选择文本文件</label><input id="files" type="file" accept=".txt,.md,text/plain" multiple>
+        <button id="import">导入</button><button id="demo">导入英文示例</button>
+      </section>
+      <section aria-label="检索资料">
+        <h2>检索资料</h2>
+        <form id="search"><label for="query">查询</label><input id="query" maxlength="600" required placeholder="How should I cool a freshly baked loaf?"><button>检索</button></form>
+        <p id="timing"></p><ol id="results"></ol>
+      </section>
+      <section aria-label="性能复测">
+        <h2>性能复测</h2>
+        <p>用固定示例对比 FP32、WASM INT8 和可用的 WebGPU FP16。结果记录模型加载、向量化、写入、索引刷新、检索与召回。</p>
+        <button id="benchmark">运行三轮对照</button><button id="download" disabled>下载实测记录</button>
+      </section>
+      <p id="status" role="status" aria-live="polite"></p>
+    </main>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
