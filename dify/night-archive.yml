@@ -1,0 +1,216 @@
+app:
+  name: 末班月亮档案室
+  description: 月亮在 23:45 消失了。调查案卷，找到移走月亮的人。嫌疑人：阿栖、小扳、铜哨。
+  mode: workflow
+  icon: 🌙
+  icon_background: '#E4DBFF'
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.4.0
+dependencies: []
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      enabled: false
+    opening_statement: ''
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+  graph:
+    nodes:
+    - id: '1793800800001'
+      type: custom
+      data:
+        type: start
+        desc: ''
+        selected: false
+        title: 受理报案
+        variables:
+        - label: 行动
+          variable: action
+          type: select
+          required: true
+          max_length: 4
+          options:
+          - 调查
+          - 指认
+        - label: 档案关键词或嫌疑人名字
+          variable: query
+          type: text-input
+          required: true
+          max_length: 120
+          options: []
+      position:
+        x: 80
+        y: 180
+      positionAbsolute:
+        x: 80
+        y: 180
+      width: 242
+      height: 100
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793800800002'
+      type: custom
+      data:
+        type: http-request
+        desc: ''
+        selected: false
+        title: 查询 seekdb 案卷
+        method: get
+        url: http://night-archive:8765/archive
+        authorization:
+          type: no-auth
+          config: null
+        headers: ''
+        params: |-
+          action:{{#1793800800001.action#}}
+          query:{{#1793800800001.query#}}
+        body:
+          type: none
+          data: []
+        timeout:
+          connect: 5
+          read: 10
+          write: 5
+        retry_config:
+          retry_enabled: false
+          max_retries: 1
+          retry_interval: 1000
+        ssl_verify: true
+        variables: []
+      position:
+        x: 370
+        y: 180
+      positionAbsolute:
+        x: 370
+        y: 180
+      width: 242
+      height: 100
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793800800003'
+      type: custom
+      data:
+        type: code
+        desc: ''
+        selected: false
+        title: 推理与结案
+        code_language: python3
+        code: |
+          import json
+
+          def main(action: str, query: str, status: int, body: str) -> dict:
+              if status != 200:
+                  return {"result": "档案室暂时关门了。请稍后再试。"}
+              archive = json.loads(body)
+              if action == "指认":
+                  if query.strip() != archive["culprit"]:
+                      return {"result": "指认暂未成立。调查「工牌」找出 17 号的领用人，再调查「冷却台」核对动机。"}
+                  return {"result": "结案！" + archive["explanation"]}
+              facts = archive["facts"]
+              if not facts:
+                  return {"result": "没有匹配的案卷。可以查「工牌」「录像」「冷却台」或「温度」。"}
+              clues = [f"[{fact['id']}] {fact['title']}：{fact['body']}" for fact in facts]
+              return {"result": "\n\n".join(clues) + "\n\n查完线索后，选择「指认」并输入嫌疑人名字。"}
+        variables:
+        - variable: action
+          value_selector:
+          - '1793800800001'
+          - action
+        - variable: query
+          value_selector:
+          - '1793800800001'
+          - query
+        - variable: status
+          value_selector:
+          - '1793800800002'
+          - status_code
+        - variable: body
+          value_selector:
+          - '1793800800002'
+          - body
+        outputs:
+          result:
+            type: string
+            children: null
+      position:
+        x: 660
+        y: 180
+      positionAbsolute:
+        x: 660
+        y: 180
+      width: 242
+      height: 100
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793800800004'
+      type: custom
+      data:
+        type: end
+        desc: ''
+        selected: false
+        title: 交付案卷
+        outputs:
+        - variable: result
+          value_selector:
+          - '1793800800003'
+          - result
+      position:
+        x: 950
+        y: 180
+      positionAbsolute:
+        x: 950
+        y: 180
+      width: 242
+      height: 100
+      sourcePosition: right
+      targetPosition: left
+    edges:
+    - id: 1793800800001-source-1793800800002-target
+      type: custom
+      source: '1793800800001'
+      sourceHandle: source
+      target: '1793800800002'
+      targetHandle: target
+      data:
+        sourceType: start
+        targetType: http-request
+        isInLoop: false
+      zIndex: 0
+    - id: 1793800800002-source-1793800800003-target
+      type: custom
+      source: '1793800800002'
+      sourceHandle: source
+      target: '1793800800003'
+      targetHandle: target
+      data:
+        sourceType: http-request
+        targetType: code
+        isInLoop: false
+      zIndex: 0
+    - id: 1793800800003-source-1793800800004-target
+      type: custom
+      source: '1793800800003'
+      sourceHandle: source
+      target: '1793800800004'
+      targetHandle: target
+      data:
+        sourceType: code
+        targetType: end
+        isInLoop: false
+      zIndex: 0
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.85

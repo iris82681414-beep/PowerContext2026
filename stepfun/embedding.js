@@ -2,7 +2,16 @@ import { env, pipeline } from '@huggingface/transformers';
 
 export const MODEL = 'Xenova/all-MiniLM-L6-v2';
 export const REVISION = '751bff37182d3f1213fa05d7196b954e230abad9';
-env.allowLocalModels = false;
+const useLocalWeights = import.meta.env?.VITE_STEPFUN_LOCAL_WEIGHTS === 'true';
+env.allowLocalModels = useLocalWeights;
+env.allowRemoteModels = !useLocalWeights;
+if (useLocalWeights) {
+  env.localModelPath = '/models/';
+  env.backends.onnx.wasm.wasmPaths = {
+    mjs: new URL('./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.jsep.mjs', import.meta.url).href,
+    wasm: new URL('./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.jsep.wasm', import.meta.url).href,
+  };
+}
 const engines = new Map();
 
 export async function openEncoder(profile, notify = () => {}) {

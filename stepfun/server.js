@@ -17,6 +17,7 @@ const connection = {
   port: Number(process.env.SEEKDB_PORT || 2881),
   user: process.env.SEEKDB_USER || 'root',
   password: process.env.SEEKDB_PASSWORD || '',
+  queryTimeout: 30_000,
 };
 const bootstrap = new SeekdbClient({ ...connection, database: 'test' });
 try {
@@ -137,6 +138,7 @@ const routes = {
   },
 };
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8', '.wasm': 'application/wasm', '.json': 'application/json' };
 
 const server = createServer(async (request, response) => {
@@ -155,7 +157,10 @@ const server = createServer(async (request, response) => {
     const file = resolve(dist, '.' + (path === '/' ? '/index.html' : decodeURIComponent(path)));
     if (!file.startsWith(dist + sep)) return json(404, { error: 'Asset not found' });
     const content = await readFile(file);
-    response.writeHead(200, { 'Content-Type': mime[extname(file)] || 'application/octet-stream' });
+    response.writeHead(200, {
+      'Content-Type': mime[extname(file)] || 'application/octet-stream',
+      'Content-Length': content.length,
+    });
     response.end(content);
   } catch (error) {
     if (error instanceof InvalidInput) return json(400, { error: error.message });

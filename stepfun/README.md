@@ -25,6 +25,8 @@ npm start
 
 ## 验证样例
 
+如需在无外网的浏览器中复测，可在构建前把固定修订的模型配置、分词器和 ONNX 权重放到 `public/models/Xenova/all-MiniLM-L6-v2/`，再运行 `VITE_STEPFUN_LOCAL_WEIGHTS=true npm run build`。本地静态权重仍由浏览器加载和推理。完整对照需要 FP32、INT8 和 FP16 文件。
+
 1. 打开 `my_library`，等界面显示 WebGPU FP16 或 WASM INT8。
 2. 点击「导入英文示例」，写入 12 个片段。输入 `How do I let a baked loaf cool before cutting it?` 并检索，核对结果及 `Bread cooling` 的完整原文。
 3. 粘贴一段新的资料并导入，例如标题 `Orchid potting`、正文 `Repot an orchid in bark after flowering.`。用 `orchid bark` 查回新增正文。再次导入相同标题和正文，核对片段数量。
@@ -50,3 +52,16 @@ seekdb-js 1.4.0 使用余弦 HNSW 和原文全文索引，调用 `hybridSearch` 
 ## 已执行的独立核验
 
 通过 Transformers.js 的 ONNX Runtime 原生 CPU 后端分别加载官方 FP32、INT8 权重。12 篇样例均经本应用写入真实 seekdb，6 条查询均返回预期首条标题和完整原文。两个版本的 Recall@3 和 MRR@5 均为 1.00。该样本用于检查量化后的检索链路，浏览器 WebGPU 和 WASM 的计时与兼容性待独立实测。
+
+2026 年 11 月 5 日，用浏览器分别实际执行 WASM INT8 与 WebGPU FP16。两套集合各保存 12 篇浏览器向量化的样例。检索烘焙问题时，两套集合的首条均为 `Bread cooling`，完整原文与样例一致。浏览器采用本地静态权重，seekdb 经测试连接转发。WebGPU 首次导入在等待数据库应答时达到客户端超时，随后重新打开集合确认已有 12 篇并查回原文。单次端到端时间受连接和冷启动影响。
+
+同一浏览器使用 12 篇、6 问固定样本各跑三轮，原始输出见 `benchmark-20261105.json`。每行包含 18 次查询。
+
+| 后端 | 批大小 | 12 篇向量化中位数 | 端侧吞吐 | Recall@3 |
+| --- | ---: | ---: | ---: | ---: |
+| WASM FP32 | 1 | 202.7 ms | 59.2 篇/s | 100% |
+| WASM INT8 | 1 | 220.5 ms | 54.4 篇/s | 100% |
+| WASM INT8 | 8 | 641.1 ms | 18.7 篇/s | 100% |
+| WebGPU FP16 | 8 | 26.9 ms | 446.1 篇/s | 100% |
+
+WASM INT8 的权重约为 FP32 的四分之一，在这组短文本上批大小 1 的吞吐约为批大小 8 的 2.91 倍。应用默认 WASM 单条、WebGPU 每批最多 8 条。原始记录把复用已有 INT8 会话与新初始化分开标注，加载字段含读取权重与热身推理。经转发的 seekdb 查询耗时存在波动，应结合原始记录单独查看数据库与端到端结果。

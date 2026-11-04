@@ -1,0 +1,1217 @@
+{
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+  "model": "Xenova/all-MiniLM-L6-v2",
+  "revision": "751bff37182d3f1213fa05d7196b954e230abad9",
+  "documents": 12,
+  "queryCount": 6,
+  "variants": [
+    {
+      "profile": "fp32",
+      "device": "wasm",
+      "batch": 1,
+      "loadMs": 783.7999999523163,
+      "reusedModel": false,
+      "rounds": [
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 8384.61183400001,
+            "refreshMs": 1082.3656250000058,
+            "embeddingMs": 198.80000007152557
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 1175.4256250000035,
+              "queryEmbeddingMs": 8.799999952316284,
+              "endToEndMs": 1996.5
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Bike chain care"
+              ],
+              "searchMs": 1177.605291999993,
+              "queryEmbeddingMs": 7.5,
+              "endToEndMs": 1516
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 6276.051084000006,
+              "queryEmbeddingMs": 8.200000047683716,
+              "endToEndMs": 7078.400000095367
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 2079.342290999979,
+              "queryEmbeddingMs": 9.699999928474426,
+              "endToEndMs": 2568.0999999046326
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 1879.399792000011,
+              "queryEmbeddingMs": 6.400000095367432,
+              "endToEndMs": 2126.100000023842
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 7502.971290999994,
+              "queryEmbeddingMs": 9.600000023841858,
+              "endToEndMs": 7970.200000047684
+            }
+          ]
+        },
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 5344.033874999994,
+            "refreshMs": 692.5746660000004,
+            "embeddingMs": 203.09999990463257
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 21946.761583000014,
+              "queryEmbeddingMs": 8.600000023841858,
+              "endToEndMs": 22447.899999976158
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Bike chain care"
+              ],
+              "searchMs": 11056.179417000007,
+              "queryEmbeddingMs": 7.600000023841858,
+              "endToEndMs": 12574.600000023842
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 9432.86383300001,
+              "queryEmbeddingMs": 9.100000023841858,
+              "endToEndMs": 9865.699999928474
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 4217.888124999998,
+              "queryEmbeddingMs": 9.400000095367432,
+              "endToEndMs": 4712.800000071526
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 3474.6300000000047,
+              "queryEmbeddingMs": 6.299999952316284,
+              "endToEndMs": 4301.5
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 1534.9117499999993,
+              "queryEmbeddingMs": 9.600000023841858,
+              "endToEndMs": 2279.5
+            }
+          ]
+        },
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 7506.767791999999,
+            "refreshMs": 1594.1670419999864,
+            "embeddingMs": 202.69999992847443
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 4566.601041999995,
+              "queryEmbeddingMs": 8.399999976158142,
+              "endToEndMs": 5421.5
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Bike chain care"
+              ],
+              "searchMs": 23552.952625000005,
+              "queryEmbeddingMs": 7.199999928474426,
+              "endToEndMs": 24373.299999952316
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 5048.835624999949,
+              "queryEmbeddingMs": 10.200000047683716,
+              "endToEndMs": 6218.600000023842
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 8184.565249999985,
+              "queryEmbeddingMs": 9.399999976158142,
+              "endToEndMs": 9030.299999952316
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 3093.1315409999806,
+              "queryEmbeddingMs": 6.399999976158142,
+              "endToEndMs": 3604.3000000715256
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 10614.44758399995,
+              "queryEmbeddingMs": 9.799999952316284,
+              "endToEndMs": 14981.399999976158
+            }
+          ]
+        }
+      ],
+      "medianDocumentEmbeddingMs": 202.69999992847443,
+      "documentsPerSecond": 59.200789364747756,
+      "medianWriteMs": 7506.767791999999,
+      "medianRefreshMs": 1082.3656250000058,
+      "medianQueryEmbeddingMs": 8.799999952316284,
+      "medianSeekdbMs": 5048.835624999949,
+      "medianEndToEndMs": 6218.600000023842,
+      "recallAt3": 1
+    },
+    {
+      "profile": "q8",
+      "device": "wasm",
+      "batch": 1,
+      "loadMs": 0,
+      "reusedModel": true,
+      "rounds": [
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 10150.896707999986,
+            "refreshMs": 1261.9208330000401,
+            "embeddingMs": 225
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 8241.228917,
+              "queryEmbeddingMs": 10.199999928474426,
+              "endToEndMs": 8701.199999928474
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Road trip packing"
+              ],
+              "searchMs": 5993.423249999993,
+              "queryEmbeddingMs": 9.100000023841858,
+              "endToEndMs": 6447.200000047684
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 5285.771249999991,
+              "queryEmbeddingMs": 9.700000047683716,
+              "endToEndMs": 6026.799999952316
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 12443.693834000034,
+              "queryEmbeddingMs": 11.200000047683716,
+              "endToEndMs": 14004.100000023842
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 4706.049582999956,
+              "queryEmbeddingMs": 7.600000023841858,
+              "endToEndMs": 6344.299999952316
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 11646.35470799997,
+              "queryEmbeddingMs": 11.200000047683716,
+              "endToEndMs": 12789.300000071526
+            }
+          ]
+        },
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 8176.161000000022,
+            "refreshMs": 1221.3502499999595,
+            "embeddingMs": 219.89999997615814
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 21128.88466599997,
+              "queryEmbeddingMs": 10,
+              "endToEndMs": 21637.299999952316
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Road trip packing"
+              ],
+              "searchMs": 10160.716416999989,
+              "queryEmbeddingMs": 9.100000023841858,
+              "endToEndMs": 13633.100000023842
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 6645.522750000004,
+              "queryEmbeddingMs": 10.299999952316284,
+              "endToEndMs": 7828.799999952316
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 4742.920165999967,
+              "queryEmbeddingMs": 11,
+              "endToEndMs": 5576
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 3523.001749999996,
+              "queryEmbeddingMs": 7.5,
+              "endToEndMs": 4729.800000071526
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 1732.8014170000097,
+              "queryEmbeddingMs": 11.099999904632568,
+              "endToEndMs": 5446.899999976158
+            }
+          ]
+        },
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 8020.835707999999,
+            "refreshMs": 2234.2300830000313,
+            "embeddingMs": 220.5
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 9507.515000000014,
+              "queryEmbeddingMs": 9.5,
+              "endToEndMs": 11855.899999976158
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Road trip packing"
+              ],
+              "searchMs": 6792.466250000056,
+              "queryEmbeddingMs": 8.800000071525574,
+              "endToEndMs": 7266.100000023842
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 8442.499040999974,
+              "queryEmbeddingMs": 9.100000023841858,
+              "endToEndMs": 9259.800000071526
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 5438.710040999984,
+              "queryEmbeddingMs": 35.39999997615814,
+              "endToEndMs": 6695.399999976158
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 6006.931584000005,
+              "queryEmbeddingMs": 28.799999952316284,
+              "endToEndMs": 7015.699999928474
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 11585.899333000008,
+              "queryEmbeddingMs": 27.90000009536743,
+              "endToEndMs": 13698.700000047684
+            }
+          ]
+        }
+      ],
+      "medianDocumentEmbeddingMs": 220.5,
+      "documentsPerSecond": 54.42176870748299,
+      "medianWriteMs": 8176.161000000022,
+      "medianRefreshMs": 1261.9208330000401,
+      "medianQueryEmbeddingMs": 10.199999928474426,
+      "medianSeekdbMs": 6792.466250000056,
+      "medianEndToEndMs": 7828.799999952316,
+      "recallAt3": 1
+    },
+    {
+      "profile": "q8",
+      "device": "wasm",
+      "batch": 8,
+      "loadMs": 0,
+      "reusedModel": true,
+      "rounds": [
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 14036.168084000063,
+            "refreshMs": 1686.5477499999106,
+            "embeddingMs": 641.1000000238419
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 5409.692500000005,
+              "queryEmbeddingMs": 26,
+              "endToEndMs": 5958.5
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Road trip packing"
+              ],
+              "searchMs": 9777.570707999985,
+              "queryEmbeddingMs": 21.299999952316284,
+              "endToEndMs": 11327.600000023842
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 3522.066583000007,
+              "queryEmbeddingMs": 24.299999952316284,
+              "endToEndMs": 4025.899999976158
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 9082.057665999979,
+              "queryEmbeddingMs": 27.700000047683716,
+              "endToEndMs": 9548.200000047684
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 5143.394749999978,
+              "queryEmbeddingMs": 27.600000023841858,
+              "endToEndMs": 5895.800000071526
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 9521.48529099999,
+              "queryEmbeddingMs": 28.899999976158142,
+              "endToEndMs": 10577.799999952316
+            }
+          ]
+        },
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 9892.022125000018,
+            "refreshMs": 2263.6639999999898,
+            "embeddingMs": 655.3999999761581
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 12052.07345799997,
+              "queryEmbeddingMs": 10.5,
+              "endToEndMs": 14430.600000023842
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Road trip packing"
+              ],
+              "searchMs": 9688.44620799995,
+              "queryEmbeddingMs": 8.799999952316284,
+              "endToEndMs": 10499.899999976158
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 18404.983041999978,
+              "queryEmbeddingMs": 9.200000047683716,
+              "endToEndMs": 22241.200000047684
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 9644.763000000035,
+              "queryEmbeddingMs": 11.599999904632568,
+              "endToEndMs": 11858.799999952316
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 8198.123625000007,
+              "queryEmbeddingMs": 7.5,
+              "endToEndMs": 10020.899999976158
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 1063.1594170000171,
+              "queryEmbeddingMs": 10.600000023841858,
+              "endToEndMs": 2677.5
+            }
+          ]
+        },
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 5247.597874999978,
+            "refreshMs": 1366.689916000003,
+            "embeddingMs": 251.30000007152557
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 3723.7222090000287,
+              "queryEmbeddingMs": 9.800000071525574,
+              "endToEndMs": 4570.5
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Road trip packing"
+              ],
+              "searchMs": 5675.146249999991,
+              "queryEmbeddingMs": 8.600000023841858,
+              "endToEndMs": 7074.600000023842
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 10709.233791000093,
+              "queryEmbeddingMs": 9.299999952316284,
+              "endToEndMs": 11162.799999952316
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 7183.4972919999855,
+              "queryEmbeddingMs": 10.200000047683716,
+              "endToEndMs": 9915.300000071526
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 7137.196790999966,
+              "queryEmbeddingMs": 7.299999952316284,
+              "endToEndMs": 13608.5
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 13589.071208999958,
+              "queryEmbeddingMs": 10.799999952316284,
+              "endToEndMs": 15501
+            }
+          ]
+        }
+      ],
+      "medianDocumentEmbeddingMs": 641.1000000238419,
+      "documentsPerSecond": 18.717828731171007,
+      "medianWriteMs": 9892.022125000018,
+      "medianRefreshMs": 1686.5477499999106,
+      "medianQueryEmbeddingMs": 10.600000023841858,
+      "medianSeekdbMs": 9082.057665999979,
+      "medianEndToEndMs": 10499.899999976158,
+      "recallAt3": 1
+    },
+    {
+      "profile": "fp16",
+      "device": "webgpu",
+      "batch": 8,
+      "loadMs": 332.2999999523163,
+      "reusedModel": false,
+      "rounds": [
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 11055.860499999952,
+            "refreshMs": 2045.2217919999966,
+            "embeddingMs": 22.200000047683716
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 11242.619792000041,
+              "queryEmbeddingMs": 18.5,
+              "endToEndMs": 12099.300000071526
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Bike chain care"
+              ],
+              "searchMs": 14077.70108300005,
+              "queryEmbeddingMs": 13.699999928474426,
+              "endToEndMs": 17710.899999976158
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 9108.509874999989,
+              "queryEmbeddingMs": 13,
+              "endToEndMs": 12915.700000047684
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 10466.89612499997,
+              "queryEmbeddingMs": 22.59999990463257,
+              "endToEndMs": 11618.199999928474
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 10914.290290999925,
+              "queryEmbeddingMs": 51.5,
+              "endToEndMs": 11765.100000023842
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 8305.994915999938,
+              "queryEmbeddingMs": 12.700000047683716,
+              "endToEndMs": 9829.899999976158
+            }
+          ]
+        },
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 18381.38054199994,
+            "refreshMs": 849.033832999994,
+            "embeddingMs": 40.5
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 3350.0677079999587,
+              "queryEmbeddingMs": 16.199999928474426,
+              "endToEndMs": 3808
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Bike chain care"
+              ],
+              "searchMs": 8857.489166999934,
+              "queryEmbeddingMs": 10.799999952316284,
+              "endToEndMs": 9667
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 8613.324041999993,
+              "queryEmbeddingMs": 14.399999976158142,
+              "endToEndMs": 9114.599999904633
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 5224.738791999989,
+              "queryEmbeddingMs": 16.200000047683716,
+              "endToEndMs": 6428.5
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 3550.1094169999706,
+              "queryEmbeddingMs": 22.200000047683716,
+              "endToEndMs": 7159.200000047684
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 5892.954291999922,
+              "queryEmbeddingMs": 13.600000023841858,
+              "endToEndMs": 6699.5
+            }
+          ]
+        },
+        {
+          "imported": {
+            "count": 12,
+            "written": 12,
+            "writeMs": 13804.222874999978,
+            "refreshMs": 1203.8384999999544,
+            "embeddingMs": 26.899999976158142
+          },
+          "outcomes": [
+            {
+              "query": "How do I let a baked loaf cool before cutting it?",
+              "expectedTitle": "Bread cooling",
+              "titles": [
+                "Bread cooling",
+                "Laptop battery care",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering"
+              ],
+              "searchMs": 9612.599875000073,
+              "queryEmbeddingMs": 15.300000071525574,
+              "endToEndMs": 10419.899999976158
+            },
+            {
+              "query": "How do I check a database backup actually works?",
+              "expectedTitle": "PostgreSQL backups",
+              "titles": [
+                "PostgreSQL backups",
+                "Laptop battery care",
+                "Plant watering",
+                "Paper references",
+                "Bike chain care"
+              ],
+              "searchMs": 6443.154833000037,
+              "queryEmbeddingMs": 13.300000071525574,
+              "endToEndMs": 6925.800000071526
+            },
+            {
+              "query": "What information should I save when citing a research article?",
+              "expectedTitle": "Paper references",
+              "titles": [
+                "Paper references",
+                "Road trip packing",
+                "Laptop battery care",
+                "Window cleaning",
+                "Pottery drying"
+              ],
+              "searchMs": 3162.090959000052,
+              "queryEmbeddingMs": 8.900000095367432,
+              "endToEndMs": 4344.100000023842
+            },
+            {
+              "query": "How can I keep the training and evaluation sets independent for each person?",
+              "expectedTitle": "Dataset splits",
+              "titles": [
+                "Dataset splits",
+                "Paper references",
+                "Conference notes",
+                "Road trip packing",
+                "Tea steeping"
+              ],
+              "searchMs": 9391.737834000029,
+              "queryEmbeddingMs": 11.5,
+              "endToEndMs": 11727.200000047684
+            },
+            {
+              "query": "How do I reduce green tea bitterness?",
+              "expectedTitle": "Tea steeping",
+              "titles": [
+                "Tea steeping",
+                "Pottery drying",
+                "Bike chain care",
+                "Plant watering",
+                "Window cleaning"
+              ],
+              "searchMs": 8358.821957999957,
+              "queryEmbeddingMs": 18.699999928474426,
+              "endToEndMs": 10343.699999928474
+            },
+            {
+              "query": "How do I keep a clay vessel from cracking as it dries?",
+              "expectedTitle": "Pottery drying",
+              "titles": [
+                "Pottery drying",
+                "Bike chain care",
+                "Laptop battery care",
+                "Paper references",
+                "Window cleaning"
+              ],
+              "searchMs": 7680.998082999955,
+              "queryEmbeddingMs": 12.199999928474426,
+              "endToEndMs": 8153.5
+            }
+          ]
+        }
+      ],
+      "medianDocumentEmbeddingMs": 26.899999976158142,
+      "documentsPerSecond": 446.09665467047483,
+      "medianWriteMs": 13804.222874999978,
+      "medianRefreshMs": 1203.8384999999544,
+      "medianQueryEmbeddingMs": 14.399999976158142,
+      "medianSeekdbMs": 8613.324041999993,
+      "medianEndToEndMs": 9829.899999976158,
+      "recallAt3": 1
+    }
+  ]
+}

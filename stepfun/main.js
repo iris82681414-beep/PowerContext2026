@@ -19,6 +19,7 @@ async function action(operation) {
 async function api(route, body) {
   const response = await fetch(`/api/${route}`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    signal: AbortSignal.timeout(45_000),
   });
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || '请求失败');
@@ -54,15 +55,16 @@ function splitDocument(title, text) {
   return parts;
 }
 
-async function importBatch(records, model, name, batchSize = 8) {
+async function importBatch(records, model, name, batchSize, progressPrefix = '') {
   const vectors = [];
   const started = performance.now();
   for (let offset = 0; offset < records.length; offset += batchSize) {
-    status(`浏览器向量化 ${offset}/${records.length}`);
+    status(`${progressPrefix}浏览器向量化 ${offset}/${records.length}`);
     const batch = records.slice(offset, offset + batchSize);
     vectors.push(...await model.encode(batch.map((record) => record.text)));
   }
   const embeddingMs = performance.now() - started;
+  status(`${progressPrefix}正在写入并刷新索引。`);
   const result = await api('import', { library: name, profile: model.profile,
     documents: records.map((record, index) => ({ ...record, embedding: vectors[index] })) });
   return { ...result, embeddingMs };
@@ -71,7 +73,8 @@ async function importBatch(records, model, name, batchSize = 8) {
 async function importIntoLibrary(records) {
   const { library: name } = context();
   if (records.length < 1 || records.length > 32) throw new Error('每次请导入 1 到 32 个文本片段。');
-  const result = await importBatch(records, encoder, name);
+  const batchSize = encoder.device === 'webgpu' ? 8 : 1;
+  const result = await importBatch(records, encoder, name, batchSize);
   $('count').textContent = `${name} 中有 ${result.count} 个文本片段`;
   status(`已写入并刷新 ${result.written} 个片段。`);
 }
@@ -88,7 +91,9 @@ const median = (values) => [...values].sort((a, b) => a - b)[Math.floor(values.l
 
 async function benchmark() {
   const run = { browser: navigator.userAgent, model: MODEL, revision: REVISION,
-    documents: documents.length, queryCount: queries.length, variants: [] };
+    documents: documents.length, queryCount: queries.length, complete: false, variants: [] };
+  report = run;
+  $('download').disabled = true;
   for (const [profile, batch] of [['fp32', 1], ['q8', 1], ['q8', 8], ['fp16', 8]]) {
     let model;
     try { model = await openEncoder(profile, status); }
@@ -100,9 +105,11 @@ async function benchmark() {
     const variant = { profile, device: model.device, batch, loadMs: model.loadMs, reusedModel: model.cached, rounds: [] };
     for (let repetition = 0; repetition < 3; repetition++) {
       const name = `bench_${profile}_${crypto.randomUUID().slice(0, 8)}`;
-      const imported = await importBatch(documents, model, name, batch);
+      const progressPrefix = `${profile.toUpperCase()} · 批大小 ${batch} · 第 ${repetition + 1}/3 轮 · `;
+      const imported = await importBatch(documents, model, name, batch, progressPrefix);
       const outcomes = [];
       for (const { query, expectedTitle } of queries) {
+        status(`${progressPrefix}检索 ${outcomes.length + 1}/${queries.length}`);
         const { results, ...timings } = await searchFor(query, model, name);
         outcomes.push({ query, expectedTitle, titles: results.map((result) => result.title), ...timings });
       }
@@ -118,9 +125,9 @@ async function benchmark() {
     variant.medianEndToEndMs = median(outcomes.map((result) => result.endToEndMs));
     variant.recallAt3 = outcomes.filter((result) => result.titles.slice(0, 3).includes(result.expectedTitle)).length / outcomes.length;
     run.variants.push(variant);
+    $('download').disabled = false;
   }
-  report = run;
-  $('download').disabled = false;
+  run.complete = true;
   status('性能复测完成。可下载各轮实际结果。');
 }
 
