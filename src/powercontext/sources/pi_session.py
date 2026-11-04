@@ -68,9 +68,10 @@ def _reject_json_constant(_value: str) -> NoReturn:
 
 def _archive(value: PiSessionInput) -> tuple[str, dict[str, _Record]]:
     try:
+        # JSONL uses LF boundaries. Unicode separators can be part of a JSON string.
         records = [
             json.loads(line, parse_constant=_reject_json_constant)
-            for line in value.content.decode("utf-8-sig").splitlines()
+            for line in value.content.decode("utf-8-sig").split("\n")
             if line.strip()
         ]
     except (UnicodeError, ValueError) as error:

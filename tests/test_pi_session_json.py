@@ -37,3 +37,21 @@ def test_pi_preserves_strings_that_resemble_json_constants(text: str) -> None:
     assert len(events) == 1
     assert events[0].content == f"user: {text}"
     assert events[0].record == record
+
+
+@pytest.mark.parametrize("line_end", ["\n", "\r\n"])
+def test_pi_preserves_unicode_separators_inside_jsonl_records(line_end: str) -> None:
+    text = "first\u2028second\u2029third\u0085fourth"
+    header = {"type": "session", "version": 3, "id": "session"}
+    record = {
+        "id": "event",
+        "parentId": None,
+        "type": "message",
+        "message": {"role": "user", "content": text},
+    }
+    archive = line_end.join(json.dumps(value, ensure_ascii=False) for value in (header, record))
+
+    (event,) = parse_pi_session(PiSessionInput(content=(archive + line_end).encode("utf-8-sig")))
+
+    assert event.content == f"user: {text}"
+    assert event.record == record
