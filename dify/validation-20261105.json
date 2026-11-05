@@ -1,0 +1,161 @@
+{
+  "validated_on": "2026-11-05",
+  "engine": "Dify 1.10.1",
+  "dsl_version": "0.5.0",
+  "import_status": "completed",
+  "database": "seekdb 1.4, real server, dedicated dify_night_archive schema",
+  "network": "Dify HTTP node -> private case archive HTTP service -> seekdb",
+  "source_sha256": {
+    "night-archive.yml": "c5f15b6ad73e36d139305e146aa7f332d08e60e6b745a212bae52a5a18b20c3f",
+    "archive.py": "af8ce9be8210ef753d8b0e5e48e276d688af80fba4f9cd0c4ab9d293dc52f316",
+    "case.json": "df355d1c5e1dadba4326711e7a47e6b78ddd0d17e3e1e1712e3d95ad8b8ad571",
+    "requirements.txt": "47273e99a18193ca852470197655e9b9740c2e6a15dbbbeaf4c4dd432f6c5bf3"
+  },
+  "samples": [
+    {
+      "action": "调查",
+      "query": "工牌",
+      "status": "succeeded",
+      "elapsed_seconds": 0.634,
+      "nodes": [
+        {
+          "id": "1793800800001",
+          "title": "受理报案",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800002",
+          "title": "查询 seekdb 案卷",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800003",
+          "title": "推理与结案",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800004",
+          "title": "交付案卷",
+          "status": "succeeded"
+        }
+      ],
+      "result": "[A01] 控制室门禁：23:42，一张临时工牌刷开了控制室。工牌持有人一栏被水浸模糊，编号末尾还能看出 17。\n\n[A03] 机器房工单：凌晨检修工单写着，值班机修师小扳领走了末尾为 17 的临时工牌，归还前只有他可使用。\n\n查完线索后，选择「指认」并输入嫌疑人名字。"
+    },
+    {
+      "action": "调查",
+      "query": "冷却台",
+      "status": "succeeded",
+      "elapsed_seconds": 0.531,
+      "nodes": [
+        {
+          "id": "1793800800001",
+          "title": "受理报案",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800002",
+          "title": "查询 seekdb 案卷",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800003",
+          "title": "推理与结案",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800004",
+          "title": "交付案卷",
+          "status": "succeeded"
+        }
+      ],
+      "result": "[A06] 温度警报：23:35，月亮投影壳体温度升高。装置规程规定，超温后必须移到冷却台。\n\n[A04] 月亮转运票：23:45，轨道机器人收到经控制室签发的移库指令，把人造月亮送到冷却台。转运签名不是游客票。\n\n查完线索后，选择「指认」并输入嫌疑人名字。"
+    },
+    {
+      "action": "指认",
+      "query": "阿栖",
+      "status": "succeeded",
+      "elapsed_seconds": 0.497,
+      "nodes": [
+        {
+          "id": "1793800800001",
+          "title": "受理报案",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800002",
+          "title": "查询 seekdb 案卷",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800003",
+          "title": "推理与结案",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800004",
+          "title": "交付案卷",
+          "status": "succeeded"
+        }
+      ],
+      "result": "指认暂未成立。调查「工牌」找出 17 号的领用人，再调查「冷却台」核对动机。"
+    },
+    {
+      "action": "指认",
+      "query": "小扳",
+      "status": "succeeded",
+      "elapsed_seconds": 0.488,
+      "nodes": [
+        {
+          "id": "1793800800001",
+          "title": "受理报案",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800002",
+          "title": "查询 seekdb 案卷",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800003",
+          "title": "推理与结案",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800004",
+          "title": "交付案卷",
+          "status": "succeeded"
+        }
+      ],
+      "result": "结案！小扳凭工牌进入控制室，签发了紧急转运。门禁 A01 与工单 A03 锁定了工牌持有人，转运票 A04 和警报 A06 解释了月亮的去向。月亮只是去降温，天亮前会回来。"
+    },
+    {
+      "action": "调查",
+      "query": "北极企鹅",
+      "status": "succeeded",
+      "elapsed_seconds": 0.493,
+      "nodes": [
+        {
+          "id": "1793800800001",
+          "title": "受理报案",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800002",
+          "title": "查询 seekdb 案卷",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800003",
+          "title": "推理与结案",
+          "status": "succeeded"
+        },
+        {
+          "id": "1793800800004",
+          "title": "交付案卷",
+          "status": "succeeded"
+        }
+      ],
+      "result": "没有匹配的案卷。可以查「工牌」「录像」「冷却台」或「温度」。"
+    }
+  ]
+}

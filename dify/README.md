@@ -4,7 +4,7 @@
 
 ## 启动
 
-需要 Dify 1.10.1、seekdb 1.4 和 Python 3.12。工作流只用 Dify 自带的 HTTP 请求、代码与输出节点，无需模型账号或外部插件。
+需要 [Dify 1.10.1](https://github.com/langgenius/dify/tree/1.10.1/docker)、seekdb 1.4 和 Python 3.12。DSL 格式版本为 0.5.0。工作流只用 Dify 自带的 HTTP 请求、代码与输出节点，无需模型账号或外部插件。
 
 1. 在 `dify/` 中安装 `requirements.txt`。通过 `SEEKDB_HOST`、`SEEKDB_PORT`、`SEEKDB_USER` 和 `SEEKDB_PASSWORD` 指定专用测试实例。运行 `python archive.py init`，初始化 `dify_night_archive`。重复初始化会替换该专用库里的示例案卷。
 2. 运行 `python archive.py serve`。服务默认监听 `127.0.0.1:8765`。在容器中部署时，将服务加入 Dify 能访问的私有容器网络，设 `ARCHIVE_HOST=0.0.0.0`，不发布端口到公网。工作流默认使用服务名 `night-archive`。需要变更时，在 HTTP 节点里填入实际内部地址。保留 Dify HTTP 代理的访问控制，按部署要求仅放行案卷服务。
@@ -24,4 +24,6 @@
 
 ## 本地验证记录
 
-使用真实 seekdb 1.4 初始化并检索案卷，经本地 HTTP 调用验证了表中五条互动。HTTP 结果交给 DSL 中同一段 Python 代码，五条均返回预期线索或结案文本。也检查了服务返回 503 时的提示。此项记录覆盖 seekdb、HTTP 和工作流代码节点，Dify Studio 导入和完整运行需另行验证。
+2026-11-05 使用官方 Dify 1.10.1 容器与真实 seekdb 1.4 验证：DSL 通过 Dify 自身导入接口完成导入，无版本警告；表中五条样例逐条通过完整 Workflow 运行接口执行，每条均包含成功的输入、HTTP 请求、代码沙箱和结束节点。HTTP 请求实际连接案卷服务，再由服务读取 seekdb；没有回放模拟响应。结果与逐节点状态见 [运行记录](validation-20261105.json)，五次工作流分别耗时约 0.49–0.63 秒。测试时仅按上述网络配置步骤将 HTTP 节点地址改为宿主机在私网中的名称，其余 DSL 内容与提交文件一致。
+
+本作是规则推理小游戏，不依赖生成模型；六份案卷与结案事实均存储在 seekdb。调查使用全文索引，指认读取数据库中的结案事实。此前也单独验证了服务返回 503 时的提示。

@@ -6,7 +6,7 @@ app:
   icon_background: '#E4DBFF'
   use_icon_as_answer_icon: false
 kind: app
-version: 0.4.0
+version: 0.5.0
 dependencies: []
 workflow:
   conversation_variables: []
