@@ -1,0 +1,23 @@
+services:
+  night-archive:
+    # Reuse the official Dify runtime already required by this workflow.
+    image: langgenius/dify-api:1.10.1@sha256:ad01e73d2a36f8163beb85094717a3900062964b1bf30e4b4e2bc1f11fa821e3
+    entrypoint: ['/app/api/.venv/bin/python', '/case/archive.py']
+    command: ['serve']
+    env_file:
+      - ${ARCHIVE_ENV_FILE:-.env}
+    environment:
+      ARCHIVE_HOST: 0.0.0.0
+      PYTHONDONTWRITEBYTECODE: '1'
+    volumes:
+      - ./:/case:ro
+    networks:
+      dify:
+        aliases:
+          - night-archive
+    restart: unless-stopped
+    # Private Dify network only; this service publishes no host ports.
+networks:
+  dify:
+    external: true
+    name: ${DIFY_NETWORK:-ob2026dify_default}

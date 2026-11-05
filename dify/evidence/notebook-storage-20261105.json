@@ -1,0 +1,118 @@
+{
+  "verified_at_unix": 1793873631.482293,
+  "backend_restarted": true,
+  "persisted_state_unchanged": true,
+  "database": "seekdb",
+  "actual_records": {
+    "engine_version": "5.7.25-OceanBase seekdb-v1.4.0.0",
+    "notebooks": [
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 12,
+        "seen": "[]",
+        "attempts": 1,
+        "completed": 0
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33_b",
+        "revision": 1,
+        "seen": "[]",
+        "attempts": 1,
+        "completed": 0
+      }
+    ],
+    "turns": [
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 1,
+        "action": "重开",
+        "query_text": "开始",
+        "decision": "reset"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 2,
+        "action": "指认",
+        "query_text": "小扳",
+        "decision": "insufficient"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 3,
+        "action": "调查",
+        "query_text": "工牌",
+        "decision": "investigated"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 4,
+        "action": "指认",
+        "query_text": "小扳",
+        "decision": "insufficient"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 5,
+        "action": "调查",
+        "query_text": "冷却台",
+        "decision": "investigated"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 6,
+        "action": "指认",
+        "query_text": "阿栖",
+        "decision": "wrong"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 7,
+        "action": "指认",
+        "query_text": "小扳",
+        "decision": "solved"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 8,
+        "action": "指认",
+        "query_text": "小扳",
+        "decision": "already_solved"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 9,
+        "action": "重开",
+        "query_text": "开始",
+        "decision": "reset"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 10,
+        "action": "指认",
+        "query_text": "小扳",
+        "decision": "insufficient"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 11,
+        "action": "调查",
+        "query_text": "北极企鹅",
+        "decision": "investigated"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33",
+        "revision": 12,
+        "action": "调查",
+        "query_text": "\"北极企鹅\"\\换行",
+        "decision": "investigated"
+      },
+      {
+        "session_id": "nov5_3b7d3f18132e4f33_b",
+        "revision": 1,
+        "action": "指认",
+        "query_text": "小扳",
+        "decision": "insufficient"
+      }
+    ]
+  }
+}

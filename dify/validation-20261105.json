@@ -1,161 +1,138 @@
 {
-  "validated_on": "2026-11-05",
   "engine": "Dify 1.10.1",
   "dsl_version": "0.5.0",
-  "import_status": "completed",
-  "database": "seekdb 1.4, real server, dedicated dify_night_archive schema",
-  "network": "Dify HTTP node -> private case archive HTTP service -> seekdb",
   "source_sha256": {
-    "night-archive.yml": "c5f15b6ad73e36d139305e146aa7f332d08e60e6b745a212bae52a5a18b20c3f",
-    "archive.py": "af8ce9be8210ef753d8b0e5e48e276d688af80fba4f9cd0c4ab9d293dc52f316",
+    "archive.py": "82180c35a3f6142d19c9aa1f7db19b73cbc701dda6afc2e87aeb49a371d7e2d1",
     "case.json": "df355d1c5e1dadba4326711e7a47e6b78ddd0d17e3e1e1712e3d95ad8b8ad571",
-    "requirements.txt": "47273e99a18193ca852470197655e9b9740c2e6a15dbbbeaf4c4dd432f6c5bf3"
+    "night-archive.yml": "0a77a1c7c2a0dfb5afb09dd17ef4f8b8ec2dc4d7f9dc919e2520ced1e2ea41b2",
+    "compose.yaml": "95ef16eb2c3a98ecf7510c60a049a9883e11580c2413ba0533cf5466ba06fc0e"
+  },
+  "canonical_graph_unchanged": true,
+  "complete": true,
+  "passed_samples": 13,
+  "started_at_unix": 1793873408.772675,
+  "finished_at_unix": 1793873435.921993,
+  "evidence": {
+    "notebook-workflow-20261105.json": "bff9e74d5dd2356c3d1436a40f11edca9812f6f1280d771b4a3c5c9c3a37fa25",
+    "notebook-storage-20261105.json": "c8854d60276fe449781cdca91247cad24c21ea27ff6f8aa844e0065ebd330676"
   },
   "samples": [
     {
-      "action": "调查",
-      "query": "工牌",
+      "session": "nov5_3b7d3f18132e4f33",
+      "action": "重开",
+      "query": "开始",
+      "workflow_run_id": "b3716fe2-f583-4276-80d8-02d4065724e1",
       "status": "succeeded",
-      "elapsed_seconds": 0.634,
-      "nodes": [
-        {
-          "id": "1793800800001",
-          "title": "受理报案",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800002",
-          "title": "查询 seekdb 案卷",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800003",
-          "title": "推理与结案",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800004",
-          "title": "交付案卷",
-          "status": "succeeded"
-        }
-      ],
-      "result": "[A01] 控制室门禁：23:42，一张临时工牌刷开了控制室。工牌持有人一栏被水浸模糊，编号末尾还能看出 17。\n\n[A03] 机器房工单：凌晨检修工单写着，值班机修师小扳领走了末尾为 17 的临时工牌，归还前只有他可使用。\n\n查完线索后，选择「指认」并输入嫌疑人名字。"
+      "elapsed_seconds": 1.8144489999394864,
+      "result": "新一轮调查开始。23:45，夜市的人造月亮不见了。先调查「工牌」或「录像」寻找突破口。\n\n笔记已保存 · 线索 0/6 · 指认 0 次 · 第 1 轮 · 调查中"
     },
     {
-      "action": "调查",
-      "query": "冷却台",
-      "status": "succeeded",
-      "elapsed_seconds": 0.531,
-      "nodes": [
-        {
-          "id": "1793800800001",
-          "title": "受理报案",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800002",
-          "title": "查询 seekdb 案卷",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800003",
-          "title": "推理与结案",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800004",
-          "title": "交付案卷",
-          "status": "succeeded"
-        }
-      ],
-      "result": "[A06] 温度警报：23:35，月亮投影壳体温度升高。装置规程规定，超温后必须移到冷却台。\n\n[A04] 月亮转运票：23:45，轨道机器人收到经控制室签发的移库指令，把人造月亮送到冷却台。转运签名不是游客票。\n\n查完线索后，选择「指认」并输入嫌疑人名字。"
-    },
-    {
-      "action": "指认",
-      "query": "阿栖",
-      "status": "succeeded",
-      "elapsed_seconds": 0.497,
-      "nodes": [
-        {
-          "id": "1793800800001",
-          "title": "受理报案",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800002",
-          "title": "查询 seekdb 案卷",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800003",
-          "title": "推理与结案",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800004",
-          "title": "交付案卷",
-          "status": "succeeded"
-        }
-      ],
-      "result": "指认暂未成立。调查「工牌」找出 17 号的领用人，再调查「冷却台」核对动机。"
-    },
-    {
+      "session": "nov5_3b7d3f18132e4f33",
       "action": "指认",
       "query": "小扳",
+      "workflow_run_id": "0facebf6-c0d3-4c19-bff5-cc503f086a78",
       "status": "succeeded",
-      "elapsed_seconds": 0.488,
-      "nodes": [
-        {
-          "id": "1793800800001",
-          "title": "受理报案",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800002",
-          "title": "查询 seekdb 案卷",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800003",
-          "title": "推理与结案",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800004",
-          "title": "交付案卷",
-          "status": "succeeded"
-        }
-      ],
-      "result": "结案！小扳凭工牌进入控制室，签发了紧急转运。门禁 A01 与工单 A03 锁定了工牌持有人，转运票 A04 和警报 A06 解释了月亮的去向。月亮只是去降温，天亮前会回来。"
+      "elapsed_seconds": 2.133774249930866,
+      "result": "证据不足，暂不能结案。尚未收集：A01、A03、A04、A06。身份链需要 A01+A03，动机链需要 A04+A06。继续调查「工牌」和「冷却台」。\n\n笔记已保存 · 线索 0/6 · 指认 1 次 · 第 2 轮 · 调查中"
     },
     {
+      "session": "nov5_3b7d3f18132e4f33",
+      "action": "调查",
+      "query": "工牌",
+      "workflow_run_id": "272d8ab8-0fe3-4ad9-8889-0f4dcd57e0fc",
+      "status": "succeeded",
+      "elapsed_seconds": 2.749653249979019,
+      "result": "[A01] 控制室门禁：23:42，一张临时工牌刷开了控制室。工牌持有人一栏被水浸模糊，编号末尾还能看出 17。\n\n[A03] 机器房工单：凌晨检修工单写着，值班机修师小扳领走了末尾为 17 的临时工牌，归还前只有他可使用。\n\n身份链已解锁：A01 的 17 号工牌与 A03 的领用记录互相印证。\n\n笔记已保存 · 线索 2/6 · 指认 1 次 · 第 3 轮 · 调查中"
+    },
+    {
+      "session": "nov5_3b7d3f18132e4f33",
+      "action": "指认",
+      "query": "小扳",
+      "workflow_run_id": "50935cb5-1d33-481a-9903-bb14117a449e",
+      "status": "succeeded",
+      "elapsed_seconds": 1.8240243330365047,
+      "result": "证据不足，暂不能结案。尚未收集：A04、A06。身份链需要 A01+A03，动机链需要 A04+A06。继续调查「工牌」和「冷却台」。\n\n笔记已保存 · 线索 2/6 · 指认 2 次 · 第 4 轮 · 调查中"
+    },
+    {
+      "session": "nov5_3b7d3f18132e4f33",
+      "action": "调查",
+      "query": "冷却台",
+      "workflow_run_id": "54ea8f31-0609-4e10-8592-a59a558a01f9",
+      "status": "succeeded",
+      "elapsed_seconds": 2.6636496669379994,
+      "result": "[A06] 温度警报：23:35，月亮投影壳体温度升高。装置规程规定，超温后必须移到冷却台。\n\n[A04] 月亮转运票：23:45，轨道机器人收到经控制室签发的移库指令，把人造月亮送到冷却台。转运签名不是游客票。\n\n身份链已解锁：A01 的 17 号工牌与 A03 的领用记录互相印证。\n\n动机链已解锁：A04 的目的地与 A06 的降温规程互相印证。\n\n笔记已保存 · 线索 4/6 · 指认 2 次 · 第 5 轮 · 调查中"
+    },
+    {
+      "session": "nov5_3b7d3f18132e4f33",
+      "action": "指认",
+      "query": "阿栖",
+      "workflow_run_id": "5c162373-1374-44fa-ba62-06ac96828b7f",
+      "status": "succeeded",
+      "elapsed_seconds": 2.00658837496303,
+      "result": "指认暂未成立。回看 A01 与 A03 的工牌记录，再用 A04 与 A06 检查这个人的行为动机。\n\n笔记已保存 · 线索 4/6 · 指认 3 次 · 第 6 轮 · 调查中"
+    },
+    {
+      "session": "nov5_3b7d3f18132e4f33",
+      "action": "指认",
+      "query": "小扳",
+      "workflow_run_id": "c0af63c5-4ec0-4aa6-8bfa-3744eb4e0424",
+      "status": "succeeded",
+      "elapsed_seconds": 1.7280380830634385,
+      "result": "结案！小扳凭工牌进入控制室，签发了紧急转运。门禁 A01 与工单 A03 锁定了工牌持有人，转运票 A04 和警报 A06 解释了月亮的去向。月亮只是去降温，天亮前会回来。\n\n笔记已保存 · 线索 4/6 · 指认 4 次 · 第 7 轮 · 已结案"
+    },
+    {
+      "session": "nov5_3b7d3f18132e4f33",
+      "action": "指认",
+      "query": "小扳",
+      "workflow_run_id": "75f2dfc5-344d-420b-8133-90bd63532e86",
+      "status": "succeeded",
+      "elapsed_seconds": 2.3610667909961194,
+      "result": "本笔记已结案。选择「重开」可开始新一轮调查。\n\n笔记已保存 · 线索 4/6 · 指认 4 次 · 第 8 轮 · 已结案"
+    },
+    {
+      "session": "nov5_3b7d3f18132e4f33_b",
+      "action": "指认",
+      "query": "小扳",
+      "workflow_run_id": "9835f47f-770a-43ed-8fb1-0e45d7e9d34f",
+      "status": "succeeded",
+      "elapsed_seconds": 1.844966792035848,
+      "result": "证据不足，暂不能结案。尚未收集：A01、A03、A04、A06。身份链需要 A01+A03，动机链需要 A04+A06。继续调查「工牌」和「冷却台」。\n\n笔记已保存 · 线索 0/6 · 指认 1 次 · 第 1 轮 · 调查中"
+    },
+    {
+      "session": "nov5_3b7d3f18132e4f33",
+      "action": "重开",
+      "query": "开始",
+      "workflow_run_id": "8856d353-1d7f-4169-b58e-8ccc7d1cd564",
+      "status": "succeeded",
+      "elapsed_seconds": 1.9543137499131262,
+      "result": "新一轮调查开始。23:45，夜市的人造月亮不见了。先调查「工牌」或「录像」寻找突破口。\n\n笔记已保存 · 线索 0/6 · 指认 0 次 · 第 9 轮 · 调查中"
+    },
+    {
+      "session": "nov5_3b7d3f18132e4f33",
+      "action": "指认",
+      "query": "小扳",
+      "workflow_run_id": "486581fb-6012-49b5-b823-edb23fff56fa",
+      "status": "succeeded",
+      "elapsed_seconds": 1.8120014580199495,
+      "result": "证据不足，暂不能结案。尚未收集：A01、A03、A04、A06。身份链需要 A01+A03，动机链需要 A04+A06。继续调查「工牌」和「冷却台」。\n\n笔记已保存 · 线索 0/6 · 指认 1 次 · 第 10 轮 · 调查中"
+    },
+    {
+      "session": "nov5_3b7d3f18132e4f33",
       "action": "调查",
       "query": "北极企鹅",
+      "workflow_run_id": "6c8297f5-8a98-40b7-9709-e99bff5ddc8f",
       "status": "succeeded",
-      "elapsed_seconds": 0.493,
-      "nodes": [
-        {
-          "id": "1793800800001",
-          "title": "受理报案",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800002",
-          "title": "查询 seekdb 案卷",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800003",
-          "title": "推理与结案",
-          "status": "succeeded"
-        },
-        {
-          "id": "1793800800004",
-          "title": "交付案卷",
-          "status": "succeeded"
-        }
-      ],
-      "result": "没有匹配的案卷。可以查「工牌」「录像」「冷却台」或「温度」。"
+      "elapsed_seconds": 1.9814356249989942,
+      "result": "没有匹配的案卷。试试「工牌」「录像」「冷却台」「温度」或「南门」。\n\n还没有形成互相印证的证据链；可以继续追查同一案卷里的关键词。\n\n笔记已保存 · 线索 0/6 · 指认 1 次 · 第 11 轮 · 调查中"
+    },
+    {
+      "session": "nov5_3b7d3f18132e4f33",
+      "action": "调查",
+      "query": "\"北极企鹅\"\\换行",
+      "workflow_run_id": "d8052d1c-8b2f-4d5a-bbff-d3778cd6d428",
+      "status": "succeeded",
+      "elapsed_seconds": 1.867793667013757,
+      "result": "没有匹配的案卷。试试「工牌」「录像」「冷却台」「温度」或「南门」。\n\n还没有形成互相印证的证据链；可以继续追查同一案卷里的关键词。\n\n笔记已保存 · 线索 0/6 · 指认 1 次 · 第 12 轮 · 调查中"
     }
   ]
 }

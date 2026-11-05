@@ -1,6 +1,6 @@
 app:
   name: 末班月亮档案室
-  description: 月亮在 23:45 消失了。调查案卷，找到移走月亮的人。嫌疑人：阿栖、小扳、铜哨。
+  description: 23:45，人造月亮失踪。用同一笔记编号跨轮调查，收集身份与动机证据链，指认后在 seekdb 保存进度。
   mode: workflow
   icon: 🌙
   icon_background: '#E4DBFF'
@@ -10,7 +10,12 @@ version: 0.5.0
 dependencies: []
 workflow:
   conversation_variables: []
-  environment_variables: []
+  environment_variables:
+  - id: e487169d-229c-4bc9-86fd-6028ec996917
+    name: ARCHIVE_TOKEN
+    value_type: secret
+    value: ''
+    description: 私有案卷服务访问令牌；部署时填写，与服务端 ARCHIVE_TOKEN 一致
   features:
     file_upload:
       enabled: false
@@ -28,14 +33,20 @@ workflow:
       enabled: false
   graph:
     nodes:
-    - id: '1793800800001'
+    - id: '1793873000001'
       type: custom
       data:
         type: start
+        title: 领取侦探笔记
         desc: ''
         selected: false
-        title: 受理报案
         variables:
+        - label: 笔记编号（8–64 位字母、数字或下划线）
+          variable: session
+          type: text-input
+          required: true
+          max_length: 64
+          options: []
         - label: 行动
           variable: action
           type: select
@@ -44,41 +55,125 @@ workflow:
           options:
           - 调查
           - 指认
-        - label: 档案关键词或嫌疑人名字
+          - 重开
+        - label: 档案关键词或嫌疑人（重开可填任意字）
           variable: query
           type: text-input
           required: true
           max_length: 120
           options: []
       position:
-        x: 80
-        y: 180
+        x: 370
+        y: 100
       positionAbsolute:
-        x: 80
-        y: 180
+        x: 370
+        y: 100
       width: 242
-      height: 100
+      height: 110
       sourcePosition: right
       targetPosition: left
-    - id: '1793800800002'
+    - id: '1793873000002'
+      type: custom
+      data:
+        type: code
+        title: 整理行动与 JSON 请求
+        desc: ''
+        selected: false
+        code_language: python3
+        code: "import json\nimport re\n\ndef main(session: str, action: str, query: str) -> dict:\n    session =\
+          \ session.strip()\n    if not re.fullmatch(r\"[A-Za-z0-9_-]{8,64}\", session):\n        raise ValueError(\"\
+          笔记编号需要 8–64 位字母、数字、下划线或短横线\")\n    if action not in (\"调查\", \"指认\", \"重开\"):\n        raise ValueError(\"\
+          请选择调查、指认或重开\")\n    query = query.strip()\n    return {\"action\": action, \"payload\": json.dumps({\"\
+          session\": session, \"action\": action, \"query\": query}, ensure_ascii=False)}\n"
+        variables:
+        - variable: session
+          value_selector:
+          - '1793873000001'
+          - session
+        - variable: action
+          value_selector:
+          - '1793873000001'
+          - action
+        - variable: query
+          value_selector:
+          - '1793873000001'
+          - query
+        outputs:
+          action:
+            type: string
+            children: null
+          payload:
+            type: string
+            children: null
+      position:
+        x: 660
+        y: 100
+      positionAbsolute:
+        x: 660
+        y: 100
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000003'
+      type: custom
+      data:
+        type: if-else
+        title: 分派调查、指认与重开
+        desc: ''
+        selected: false
+        cases:
+        - case_id: investigate
+          logical_operator: and
+          conditions:
+          - id: choice-investigate
+            variable_selector:
+            - '1793873000002'
+            - action
+            comparison_operator: is
+            value: 调查
+        - case_id: accuse
+          logical_operator: and
+          conditions:
+          - id: choice-accuse
+            variable_selector:
+            - '1793873000002'
+            - action
+            comparison_operator: is
+            value: 指认
+      position:
+        x: 950
+        y: 100
+      positionAbsolute:
+        x: 950
+        y: 100
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000004'
       type: custom
       data:
         type: http-request
+        title: 读取 seekdb 调查资料
         desc: ''
         selected: false
-        title: 查询 seekdb 案卷
-        method: get
-        url: http://night-archive:8765/archive
+        method: post
+        url: http://night-archive:8765/facts/search
         authorization:
-          type: no-auth
-          config: null
-        headers: ''
-        params: |-
-          action:{{#1793800800001.action#}}
-          query:{{#1793800800001.query#}}
+          type: api-key
+          config:
+            type: bearer
+            api_key: '{{#env.ARCHIVE_TOKEN#}}'
+            header: ''
+        headers: Content-Type:application/json
+        params: ''
         body:
-          type: none
-          data: []
+          type: json
+          data:
+          - key: ''
+            type: text
+            value: '{{#1793873000002.payload#}}'
         timeout:
           connect: 5
           read: 10
@@ -90,120 +185,721 @@ workflow:
         ssl_verify: true
         variables: []
       position:
-        x: 370
-        y: 180
+        x: 1240
+        y: 100
       positionAbsolute:
-        x: 370
-        y: 180
+        x: 1240
+        y: 100
       width: 242
-      height: 100
+      height: 110
       sourcePosition: right
       targetPosition: left
-    - id: '1793800800003'
+    - id: '1793873000005'
       type: custom
       data:
         type: code
+        title: 整理线索与解锁证据链
         desc: ''
         selected: false
-        title: 推理与结案
         code_language: python3
-        code: |
-          import json
-
-          def main(action: str, query: str, status: int, body: str) -> dict:
-              if status != 200:
-                  return {"result": "档案室暂时关门了。请稍后再试。"}
-              archive = json.loads(body)
-              if action == "指认":
-                  if query.strip() != archive["culprit"]:
-                      return {"result": "指认暂未成立。调查「工牌」找出 17 号的领用人，再调查「冷却台」核对动机。"}
-                  return {"result": "结案！" + archive["explanation"]}
-              facts = archive["facts"]
-              if not facts:
-                  return {"result": "没有匹配的案卷。可以查「工牌」「录像」「冷却台」或「温度」。"}
-              clues = [f"[{fact['id']}] {fact['title']}：{fact['body']}" for fact in facts]
-              return {"result": "\n\n".join(clues) + "\n\n查完线索后，选择「指认」并输入嫌疑人名字。"}
+        code: "import json\n\ndef main(request: str, status: int, body: str) -> dict:\n    if status != 200:\n \
+          \       raise ValueError(\"档案室暂时无法读取，请稍后重试\")\n    turn = json.loads(request)\n    archive = json.loads(body)\n\
+          \    facts = archive[\"facts\"]\n    seen = set(archive[\"state\"][\"seen\"]) | {fact[\"id\"] for fact\
+          \ in facts}\n    lines = [\"[\" + f[\"id\"] + \"] \" + f[\"title\"] + \"：\" + f[\"body\"] for f in facts]\n\
+          \    if not lines:\n        lines = [\"没有匹配的案卷。试试「工牌」「录像」「冷却台」「温度」或「南门」。\"]\n    deductions = []\n   \
+          \ if {\"A01\", \"A03\"} <= seen:\n        deductions.append(\"身份链已解锁：A01 的 17 号工牌与 A03 的领用记录互相印证。\")\n\
+          \    if {\"A04\", \"A06\"} <= seen:\n        deductions.append(\"动机链已解锁：A04 的目的地与 A06 的降温规程互相印证。\")\n\
+          \    if \"A02\" in seen:\n        deductions.append(\"排除线索：A02 记录了阿栖在关键时间段的不在场证明。\")\n    if \"A05\" in\
+          \ seen:\n        deductions.append(\"排除线索：A05 的南门门卡与 A01 的临时工牌不是同一张。\")\n    if not deductions:\n    \
+          \    deductions.append(\"还没有形成互相印证的证据链；可以继续追查同一案卷里的关键词。\")\n    turn.update(revision=archive[\"state\"\
+          ][\"revision\"], clues=[f[\"id\"] for f in facts], decision=\"investigated\", result=\"\\n\\n\".join(lines\
+          \ + deductions))\n    return {\"payload\": json.dumps(turn, ensure_ascii=False)}\n"
         variables:
-        - variable: action
+        - variable: request
           value_selector:
-          - '1793800800001'
-          - action
-        - variable: query
-          value_selector:
-          - '1793800800001'
-          - query
+          - '1793873000002'
+          - payload
         - variable: status
           value_selector:
-          - '1793800800002'
+          - '1793873000004'
           - status_code
         - variable: body
           value_selector:
-          - '1793800800002'
+          - '1793873000004'
+          - body
+        outputs:
+          payload:
+            type: string
+            children: null
+      position:
+        x: 1530
+        y: 100
+      positionAbsolute:
+        x: 1530
+        y: 100
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000006'
+      type: custom
+      data:
+        type: http-request
+        title: 保存调查笔记
+        desc: ''
+        selected: false
+        method: post
+        url: http://night-archive:8765/notebook/commit
+        authorization:
+          type: api-key
+          config:
+            type: bearer
+            api_key: '{{#env.ARCHIVE_TOKEN#}}'
+            header: ''
+        headers: Content-Type:application/json
+        params: ''
+        body:
+          type: json
+          data:
+          - key: ''
+            type: text
+            value: '{{#1793873000005.payload#}}'
+        timeout:
+          connect: 5
+          read: 10
+          write: 5
+        retry_config:
+          retry_enabled: false
+          max_retries: 1
+          retry_interval: 1000
+        ssl_verify: true
+        variables: []
+      position:
+        x: 80
+        y: 370
+      positionAbsolute:
+        x: 80
+        y: 370
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000007'
+      type: custom
+      data:
+        type: code
+        title: 确认持久化并展示进度
+        desc: ''
+        selected: false
+        code_language: python3
+        code: "import json\n\ndef main(status: int, body: str) -> dict:\n    if status == 409:\n        return {\"\
+          result\": \"同一本笔记刚刚被更新。本次行动未保存，请重新执行。\"}\n    if status != 200:\n        return {\"result\": \"笔记未保存，请稍后重试这次行动。\"\
+          }\n    saved = json.loads(body)\n    state = saved[\"state\"]\n    progress = \"笔记已保存 · 线索 \" + str(len(state[\"\
+          seen\"])) + \"/6 · 指认 \" + str(state[\"attempts\"]) + \" 次 · 第 \" + str(state[\"revision\"]) + \" 轮 ·\
+          \ \" + (\"已结案\" if state[\"completed\"] else \"调查中\")\n    return {\"result\": saved[\"result\"] + \"\\\
+          n\\n\" + progress}\n"
+        variables:
+        - variable: status
+          value_selector:
+          - '1793873000006'
+          - status_code
+        - variable: body
+          value_selector:
+          - '1793873000006'
           - body
         outputs:
           result:
             type: string
             children: null
       position:
-        x: 660
-        y: 180
+        x: 370
+        y: 370
       positionAbsolute:
-        x: 660
-        y: 180
+        x: 370
+        y: 370
       width: 242
-      height: 100
+      height: 110
       sourcePosition: right
       targetPosition: left
-    - id: '1793800800004'
+    - id: '1793873000008'
       type: custom
       data:
         type: end
+        title: 交付调查结果
         desc: ''
         selected: false
-        title: 交付案卷
         outputs:
         - variable: result
           value_selector:
-          - '1793800800003'
+          - '1793873000007'
           - result
       position:
+        x: 660
+        y: 370
+      positionAbsolute:
+        x: 660
+        y: 370
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000009'
+      type: custom
+      data:
+        type: http-request
+        title: 读取 seekdb 指认资料
+        desc: ''
+        selected: false
+        method: post
+        url: http://night-archive:8765/notebook/read
+        authorization:
+          type: api-key
+          config:
+            type: bearer
+            api_key: '{{#env.ARCHIVE_TOKEN#}}'
+            header: ''
+        headers: Content-Type:application/json
+        params: ''
+        body:
+          type: json
+          data:
+          - key: ''
+            type: text
+            value: '{{#1793873000002.payload#}}'
+        timeout:
+          connect: 5
+          read: 10
+          write: 5
+        retry_config:
+          retry_enabled: false
+          max_retries: 1
+          retry_interval: 1000
+        ssl_verify: true
+        variables: []
+      position:
         x: 950
-        y: 180
+        y: 370
       positionAbsolute:
         x: 950
-        y: 180
+        y: 370
       width: 242
-      height: 100
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000010'
+      type: custom
+      data:
+        type: code
+        title: 审查证据链并作出判定
+        desc: ''
+        selected: false
+        code_language: python3
+        code: "import json\n\ndef main(request: str, status: int, body: str) -> dict:\n    if status != 200:\n \
+          \       raise ValueError(\"档案室暂时无法读取，请稍后重试\")\n    turn = json.loads(request)\n    archive = json.loads(body)\n\
+          \    seen = set(archive[\"state\"][\"seen\"])\n    missing = sorted({\"A01\", \"A03\", \"A04\", \"A06\"\
+          } - seen)\n    if archive[\"state\"][\"completed\"]:\n        decision, result = \"already_solved\", \"\
+          本笔记已结案。选择「重开」可开始新一轮调查。\"\n    elif missing:\n        decision = \"insufficient\"\n        result = \"\
+          证据不足，暂不能结案。尚未收集：\" + \"、\".join(missing) + \"。身份链需要 A01+A03，动机链需要 A04+A06。继续调查「工牌」和「冷却台」。\"\n    elif\
+          \ turn[\"query\"] != archive[\"verdict\"][\"culprit\"]:\n        decision = \"wrong\"\n        result\
+          \ = \"指认暂未成立。回看 A01 与 A03 的工牌记录，再用 A04 与 A06 检查这个人的行为动机。\"\n    else:\n        decision = \"solved\"\n\
+          \        result = \"结案！\" + archive[\"verdict\"][\"explanation\"]\n    turn.update(revision=archive[\"\
+          state\"][\"revision\"], clues=[], decision=decision, result=result)\n    return {\"payload\": json.dumps(turn,\
+          \ ensure_ascii=False)}\n"
+        variables:
+        - variable: request
+          value_selector:
+          - '1793873000002'
+          - payload
+        - variable: status
+          value_selector:
+          - '1793873000009'
+          - status_code
+        - variable: body
+          value_selector:
+          - '1793873000009'
+          - body
+        outputs:
+          payload:
+            type: string
+            children: null
+      position:
+        x: 1240
+        y: 370
+      positionAbsolute:
+        x: 1240
+        y: 370
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000011'
+      type: custom
+      data:
+        type: http-request
+        title: 保存指认笔记
+        desc: ''
+        selected: false
+        method: post
+        url: http://night-archive:8765/notebook/commit
+        authorization:
+          type: api-key
+          config:
+            type: bearer
+            api_key: '{{#env.ARCHIVE_TOKEN#}}'
+            header: ''
+        headers: Content-Type:application/json
+        params: ''
+        body:
+          type: json
+          data:
+          - key: ''
+            type: text
+            value: '{{#1793873000010.payload#}}'
+        timeout:
+          connect: 5
+          read: 10
+          write: 5
+        retry_config:
+          retry_enabled: false
+          max_retries: 1
+          retry_interval: 1000
+        ssl_verify: true
+        variables: []
+      position:
+        x: 1530
+        y: 370
+      positionAbsolute:
+        x: 1530
+        y: 370
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000012'
+      type: custom
+      data:
+        type: code
+        title: 确认持久化并展示进度
+        desc: ''
+        selected: false
+        code_language: python3
+        code: "import json\n\ndef main(status: int, body: str) -> dict:\n    if status == 409:\n        return {\"\
+          result\": \"同一本笔记刚刚被更新。本次行动未保存，请重新执行。\"}\n    if status != 200:\n        return {\"result\": \"笔记未保存，请稍后重试这次行动。\"\
+          }\n    saved = json.loads(body)\n    state = saved[\"state\"]\n    progress = \"笔记已保存 · 线索 \" + str(len(state[\"\
+          seen\"])) + \"/6 · 指认 \" + str(state[\"attempts\"]) + \" 次 · 第 \" + str(state[\"revision\"]) + \" 轮 ·\
+          \ \" + (\"已结案\" if state[\"completed\"] else \"调查中\")\n    return {\"result\": saved[\"result\"] + \"\\\
+          n\\n\" + progress}\n"
+        variables:
+        - variable: status
+          value_selector:
+          - '1793873000011'
+          - status_code
+        - variable: body
+          value_selector:
+          - '1793873000011'
+          - body
+        outputs:
+          result:
+            type: string
+            children: null
+      position:
+        x: 80
+        y: 640
+      positionAbsolute:
+        x: 80
+        y: 640
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000013'
+      type: custom
+      data:
+        type: end
+        title: 交付指认结果
+        desc: ''
+        selected: false
+        outputs:
+        - variable: result
+          value_selector:
+          - '1793873000012'
+          - result
+      position:
+        x: 370
+        y: 640
+      positionAbsolute:
+        x: 370
+        y: 640
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000014'
+      type: custom
+      data:
+        type: http-request
+        title: 读取 seekdb 重开资料
+        desc: ''
+        selected: false
+        method: post
+        url: http://night-archive:8765/notebook/read
+        authorization:
+          type: api-key
+          config:
+            type: bearer
+            api_key: '{{#env.ARCHIVE_TOKEN#}}'
+            header: ''
+        headers: Content-Type:application/json
+        params: ''
+        body:
+          type: json
+          data:
+          - key: ''
+            type: text
+            value: '{{#1793873000002.payload#}}'
+        timeout:
+          connect: 5
+          read: 10
+          write: 5
+        retry_config:
+          retry_enabled: false
+          max_retries: 1
+          retry_interval: 1000
+        ssl_verify: true
+        variables: []
+      position:
+        x: 660
+        y: 640
+      positionAbsolute:
+        x: 660
+        y: 640
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000015'
+      type: custom
+      data:
+        type: code
+        title: 准备新一轮调查
+        desc: ''
+        selected: false
+        code_language: python3
+        code: "import json\n\ndef main(request: str, status: int, body: str) -> dict:\n    if status != 200:\n \
+          \       raise ValueError(\"档案室暂时无法读取，请稍后重试\")\n    turn = json.loads(request)\n    turn.update(revision=json.loads(body)[\"\
+          state\"][\"revision\"], clues=[], decision=\"reset\", result=\"新一轮调查开始。23:45，夜市的人造月亮不见了。先调查「工牌」或「录像」寻找突破口。\"\
+          )\n    return {\"payload\": json.dumps(turn, ensure_ascii=False)}\n"
+        variables:
+        - variable: request
+          value_selector:
+          - '1793873000002'
+          - payload
+        - variable: status
+          value_selector:
+          - '1793873000014'
+          - status_code
+        - variable: body
+          value_selector:
+          - '1793873000014'
+          - body
+        outputs:
+          payload:
+            type: string
+            children: null
+      position:
+        x: 950
+        y: 640
+      positionAbsolute:
+        x: 950
+        y: 640
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000016'
+      type: custom
+      data:
+        type: http-request
+        title: 保存重开笔记
+        desc: ''
+        selected: false
+        method: post
+        url: http://night-archive:8765/notebook/commit
+        authorization:
+          type: api-key
+          config:
+            type: bearer
+            api_key: '{{#env.ARCHIVE_TOKEN#}}'
+            header: ''
+        headers: Content-Type:application/json
+        params: ''
+        body:
+          type: json
+          data:
+          - key: ''
+            type: text
+            value: '{{#1793873000015.payload#}}'
+        timeout:
+          connect: 5
+          read: 10
+          write: 5
+        retry_config:
+          retry_enabled: false
+          max_retries: 1
+          retry_interval: 1000
+        ssl_verify: true
+        variables: []
+      position:
+        x: 1240
+        y: 640
+      positionAbsolute:
+        x: 1240
+        y: 640
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000017'
+      type: custom
+      data:
+        type: code
+        title: 确认持久化并展示进度
+        desc: ''
+        selected: false
+        code_language: python3
+        code: "import json\n\ndef main(status: int, body: str) -> dict:\n    if status == 409:\n        return {\"\
+          result\": \"同一本笔记刚刚被更新。本次行动未保存，请重新执行。\"}\n    if status != 200:\n        return {\"result\": \"笔记未保存，请稍后重试这次行动。\"\
+          }\n    saved = json.loads(body)\n    state = saved[\"state\"]\n    progress = \"笔记已保存 · 线索 \" + str(len(state[\"\
+          seen\"])) + \"/6 · 指认 \" + str(state[\"attempts\"]) + \" 次 · 第 \" + str(state[\"revision\"]) + \" 轮 ·\
+          \ \" + (\"已结案\" if state[\"completed\"] else \"调查中\")\n    return {\"result\": saved[\"result\"] + \"\\\
+          n\\n\" + progress}\n"
+        variables:
+        - variable: status
+          value_selector:
+          - '1793873000016'
+          - status_code
+        - variable: body
+          value_selector:
+          - '1793873000016'
+          - body
+        outputs:
+          result:
+            type: string
+            children: null
+      position:
+        x: 1530
+        y: 640
+      positionAbsolute:
+        x: 1530
+        y: 640
+      width: 242
+      height: 110
+      sourcePosition: right
+      targetPosition: left
+    - id: '1793873000018'
+      type: custom
+      data:
+        type: end
+        title: 交付重开结果
+        desc: ''
+        selected: false
+        outputs:
+        - variable: result
+          value_selector:
+          - '1793873000017'
+          - result
+      position:
+        x: 80
+        y: 910
+      positionAbsolute:
+        x: 80
+        y: 910
+      width: 242
+      height: 110
       sourcePosition: right
       targetPosition: left
     edges:
-    - id: 1793800800001-source-1793800800002-target
+    - id: 1793873000001-source-1793873000002-target
       type: custom
-      source: '1793800800001'
+      source: '1793873000001'
       sourceHandle: source
-      target: '1793800800002'
+      target: '1793873000002'
       targetHandle: target
       data:
         sourceType: start
+        targetType: code
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000002-source-1793873000003-target
+      type: custom
+      source: '1793873000002'
+      sourceHandle: source
+      target: '1793873000003'
+      targetHandle: target
+      data:
+        sourceType: code
+        targetType: if-else
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000003-investigate-1793873000004-target
+      type: custom
+      source: '1793873000003'
+      sourceHandle: investigate
+      target: '1793873000004'
+      targetHandle: target
+      data:
+        sourceType: if-else
         targetType: http-request
         isInLoop: false
       zIndex: 0
-    - id: 1793800800002-source-1793800800003-target
+    - id: 1793873000004-source-1793873000005-target
       type: custom
-      source: '1793800800002'
+      source: '1793873000004'
       sourceHandle: source
-      target: '1793800800003'
+      target: '1793873000005'
       targetHandle: target
       data:
         sourceType: http-request
         targetType: code
         isInLoop: false
       zIndex: 0
-    - id: 1793800800003-source-1793800800004-target
+    - id: 1793873000005-source-1793873000006-target
       type: custom
-      source: '1793800800003'
+      source: '1793873000005'
       sourceHandle: source
-      target: '1793800800004'
+      target: '1793873000006'
+      targetHandle: target
+      data:
+        sourceType: code
+        targetType: http-request
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000006-source-1793873000007-target
+      type: custom
+      source: '1793873000006'
+      sourceHandle: source
+      target: '1793873000007'
+      targetHandle: target
+      data:
+        sourceType: http-request
+        targetType: code
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000007-source-1793873000008-target
+      type: custom
+      source: '1793873000007'
+      sourceHandle: source
+      target: '1793873000008'
+      targetHandle: target
+      data:
+        sourceType: code
+        targetType: end
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000003-accuse-1793873000009-target
+      type: custom
+      source: '1793873000003'
+      sourceHandle: accuse
+      target: '1793873000009'
+      targetHandle: target
+      data:
+        sourceType: if-else
+        targetType: http-request
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000009-source-1793873000010-target
+      type: custom
+      source: '1793873000009'
+      sourceHandle: source
+      target: '1793873000010'
+      targetHandle: target
+      data:
+        sourceType: http-request
+        targetType: code
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000010-source-1793873000011-target
+      type: custom
+      source: '1793873000010'
+      sourceHandle: source
+      target: '1793873000011'
+      targetHandle: target
+      data:
+        sourceType: code
+        targetType: http-request
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000011-source-1793873000012-target
+      type: custom
+      source: '1793873000011'
+      sourceHandle: source
+      target: '1793873000012'
+      targetHandle: target
+      data:
+        sourceType: http-request
+        targetType: code
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000012-source-1793873000013-target
+      type: custom
+      source: '1793873000012'
+      sourceHandle: source
+      target: '1793873000013'
+      targetHandle: target
+      data:
+        sourceType: code
+        targetType: end
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000003-false-1793873000014-target
+      type: custom
+      source: '1793873000003'
+      sourceHandle: 'false'
+      target: '1793873000014'
+      targetHandle: target
+      data:
+        sourceType: if-else
+        targetType: http-request
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000014-source-1793873000015-target
+      type: custom
+      source: '1793873000014'
+      sourceHandle: source
+      target: '1793873000015'
+      targetHandle: target
+      data:
+        sourceType: http-request
+        targetType: code
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000015-source-1793873000016-target
+      type: custom
+      source: '1793873000015'
+      sourceHandle: source
+      target: '1793873000016'
+      targetHandle: target
+      data:
+        sourceType: code
+        targetType: http-request
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000016-source-1793873000017-target
+      type: custom
+      source: '1793873000016'
+      sourceHandle: source
+      target: '1793873000017'
+      targetHandle: target
+      data:
+        sourceType: http-request
+        targetType: code
+        isInLoop: false
+      zIndex: 0
+    - id: 1793873000017-source-1793873000018-target
+      type: custom
+      source: '1793873000017'
+      sourceHandle: source
+      target: '1793873000018'
       targetHandle: target
       data:
         sourceType: code
@@ -213,4 +909,4 @@ workflow:
     viewport:
       x: 0
       y: 0
-      zoom: 0.85
+      zoom: 0.5
