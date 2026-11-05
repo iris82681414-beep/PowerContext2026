@@ -33,6 +33,8 @@ python validate_context.py --database sdd_acceptance --output run-evidence/conte
 
 此命令记录数据库版本、依赖、源码摘要、每一步独立进程的命令和退出码、原始输出及修改前的真实业务失败；还会验证规范更新、恢复原规范和记忆版本引用。它不修改原始业务代码或测试，也不会请求模型。11 月 6 日的真实运行材料在 [evidence/context-20261106](evidence/context-20261106/summary.json)，四项上下文要求已通过，但 `contest_ready`、`minimax_called`、`target_fix_complete` 均为 `false`。技术说明见 [TECHNICAL.md](TECHNICAL.md)。
 
+同日另外在 Linux x86_64、Python 3.12.3 的新虚拟环境按相同锁文件完成验证，连接真实 seekdb 1.4；[Linux 原始证据](evidence/context-linux-20261106/summary.json)记录的源码摘要与当前源码逐项一致。依赖文件下载记录及摘要、离线安装日志、系统和运行退出状态一并保存。为避免镜像同步延迟，镜像缺少的 `pydantic==2.14.3`、`pydantic-core==2.50.4` 从 PyPI 补齐，依赖版本没有变更。此记录同样未调用 MiniMax，尚不能替代完整业务修改验收。
+
 完整赛题验证还需把 `prepare` 结果交给实际使用 MiniMax 的开发助手，记录代码修改，并对修改后的版本运行上面同一组测试。当前目录保留待修改基线，尚无 MiniMax 实际开发记录或修改后测试结果。
 
 ## MiniMax API 补丁入口

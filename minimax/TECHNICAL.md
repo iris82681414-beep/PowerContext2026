@@ -8,7 +8,7 @@
 
 PowerContext 1.2.0 的 builtin runtime 使用 SQLite 保存任务完成项、下一步及验证结果。独立的 `remember` 和 `prepare` 进程通过同一数据库路径和任务 scope 复用状态，并核对记忆版本引用。seekdb 承担工程资料检索，PowerContext 承担工程进度的持久化与恢复。
 
-Python 3.12 的完整依赖固定在 `requirements.lock`。本轮修正了仅安装基础 PowerContext 包导致缺少 `opentelemetry` 的真实启动失败；该失败与业务基线失败分别保留，不能相互替代。`validate_context.py` 从全新记忆状态检查导入、三类检索、业务基线失败、独立进程恢复、规格更新和原规格恢复，保存版本、源码摘要、每个命令的退出码及原始输出。11 月 6 日在干净环境、真实 seekdb 1.4 上运行完成，材料见 `evidence/context-20261106/`。
+Python 3.12 的完整依赖固定在 `requirements.lock`。本轮修正了仅安装基础 PowerContext 包导致缺少 `opentelemetry` 的真实启动失败；该失败与业务基线失败分别保留，不能相互替代。`validate_context.py` 从全新记忆状态检查导入、三类检索、业务基线失败、独立进程恢复、规格更新和原规格恢复，保存版本、源码摘要、每个命令的退出码及原始输出。11 月 6 日分别在 macOS Python 3.12.14 和 Linux x86_64 Python 3.12.3 的干净环境、真实 seekdb 1.4 上运行完成，材料见 `evidence/context-20261106/` 和 `evidence/context-linux-20261106/`。两次运行的核心源码和依赖锁文件摘要一致。
 
 `request_patch.py` 接收实际检索上下文，向指定区域的官方 MiniMax 接口请求完整业务模块提案。模型须显式指定；凭据仅来自进程环境。记录包括请求正文、响应 ID、返回模型、用量及内容摘要，不保存密钥或推理内容。提案须经审阅后再应用，保留前后快照和差异，使用同一份测试验证目标行为及回归，再将结果写回 PowerContext 并重读。
 

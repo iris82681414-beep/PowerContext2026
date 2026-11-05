@@ -1,0 +1,652 @@
+{
+  "downloads": [
+    {
+      "requirement": "aiomysql==0.3.2",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.467
+        }
+      ]
+    },
+    {
+      "requirement": "aiosqlite==0.22.1",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.439
+        }
+      ]
+    },
+    {
+      "requirement": "annotated-types==0.8.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.497
+        }
+      ]
+    },
+    {
+      "requirement": "anthropic==2.5.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.659
+        }
+      ]
+    },
+    {
+      "requirement": "anyio==4.16.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.551
+        }
+      ]
+    },
+    {
+      "requirement": "apscheduler==3.11.3",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.552
+        }
+      ]
+    },
+    {
+      "requirement": "attrs==26.1.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.393
+        }
+      ]
+    },
+    {
+      "requirement": "certifi==2026.10.23",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.584
+        }
+      ]
+    },
+    {
+      "requirement": "charset-normalizer==3.5.2",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.85
+        }
+      ]
+    },
+    {
+      "requirement": "docstring-parser==0.18.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.392
+        }
+      ]
+    },
+    {
+      "requirement": "genai-prices==0.2.1",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.485
+        }
+      ]
+    },
+    {
+      "requirement": "greenlet==3.5.6",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.73
+        }
+      ]
+    },
+    {
+      "requirement": "griffelib==2.4.1",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.455
+        }
+      ]
+    },
+    {
+      "requirement": "h11==0.16.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.544
+        }
+      ]
+    },
+    {
+      "requirement": "httpcore==1.0.9",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.521
+        }
+      ]
+    },
+    {
+      "requirement": "httpcore2==2.16.0; sys_platform != \"emscripten\"",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.439
+        }
+      ]
+    },
+    {
+      "requirement": "httpx==0.28.1",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.474
+        }
+      ]
+    },
+    {
+      "requirement": "httpx2==2.16.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.514
+        }
+      ]
+    },
+    {
+      "requirement": "idna==3.20",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.524
+        }
+      ]
+    },
+    {
+      "requirement": "jiter==0.18.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.592
+        }
+      ]
+    },
+    {
+      "requirement": "jsonschema==4.26.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.582
+        }
+      ]
+    },
+    {
+      "requirement": "jsonschema-specifications==2025.9.1",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.433
+        }
+      ]
+    },
+    {
+      "requirement": "logfire-api==5.4.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.529
+        }
+      ]
+    },
+    {
+      "requirement": "numpy==2.5.4",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 1.623
+        }
+      ]
+    },
+    {
+      "requirement": "openai==3.46.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.614
+        }
+      ]
+    },
+    {
+      "requirement": "opentelemetry-api==1.45.2",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.432
+        }
+      ]
+    },
+    {
+      "requirement": "packaging==26.3",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.47
+        }
+      ]
+    },
+    {
+      "requirement": "powercontext==1.2.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.792
+        }
+      ]
+    },
+    {
+      "requirement": "pydantic==2.14.3",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 1,
+          "elapsed_seconds": 1.512
+        },
+        {
+          "index": "https://pypi.org/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 12.876
+        }
+      ]
+    },
+    {
+      "requirement": "pydantic-ai-slim==2.66.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 1.698
+        }
+      ]
+    },
+    {
+      "requirement": "pydantic-core==2.50.4",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 1,
+          "elapsed_seconds": 1.358
+        },
+        {
+          "index": "https://pypi.org/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 199.459
+        }
+      ]
+    },
+    {
+      "requirement": "pydantic-graph==2.66.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.407
+        }
+      ]
+    },
+    {
+      "requirement": "pydantic-settings==2.16.2",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.431
+        }
+      ]
+    },
+    {
+      "requirement": "pymysql==1.2.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.563
+        }
+      ]
+    },
+    {
+      "requirement": "pyobvector==0.2.29",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.659
+        }
+      ]
+    },
+    {
+      "requirement": "python-dotenv==1.2.4",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.311
+        }
+      ]
+    },
+    {
+      "requirement": "pyyaml==6.0.3",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.355
+        }
+      ]
+    },
+    {
+      "requirement": "referencing==0.37.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.354
+        }
+      ]
+    },
+    {
+      "requirement": "regex==2026.9.29",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.845
+        }
+      ]
+    },
+    {
+      "requirement": "requests==2.34.2",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.374
+        }
+      ]
+    },
+    {
+      "requirement": "rfc8785==0.1.4",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.488
+        }
+      ]
+    },
+    {
+      "requirement": "rpds-py==2026.9.1",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.698
+        }
+      ]
+    },
+    {
+      "requirement": "sniffio==1.3.1",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.319
+        }
+      ]
+    },
+    {
+      "requirement": "socksio==1.0.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.425
+        }
+      ]
+    },
+    {
+      "requirement": "sqlalchemy==2.1.8",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.907
+        }
+      ]
+    },
+    {
+      "requirement": "sqlglot==30.29.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.7
+        }
+      ]
+    },
+    {
+      "requirement": "sqlite-vec==0.1.9",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.822
+        }
+      ]
+    },
+    {
+      "requirement": "tiktoken==0.14.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.389
+        }
+      ]
+    },
+    {
+      "requirement": "truststore==0.10.5; sys_platform != \"emscripten\"",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.273
+        }
+      ]
+    },
+    {
+      "requirement": "typing-extensions==4.16.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.313
+        }
+      ]
+    },
+    {
+      "requirement": "typing-inspection==0.4.5",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.32
+        }
+      ]
+    },
+    {
+      "requirement": "tzlocal==5.4.5",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.384
+        }
+      ]
+    },
+    {
+      "requirement": "urllib3==2.8.0",
+      "success": true,
+      "attempts": [
+        {
+          "index": "https://repo.huaweicloud.com/repository/pypi/simple",
+          "exit_code": 0,
+          "elapsed_seconds": 0.342
+        }
+      ]
+    }
+  ],
+  "wheel_sha256": {
+    "aiomysql-0.3.2-py3-none-any.whl": "c82c5ba04137d7afd5c693a258bea8ead2aad77101668044143a991e04632eb2",
+    "aiosqlite-0.22.1-py3-none-any.whl": "21c002eb13823fad740196c5a2e9d8e62f6243bd9e7e4a1f87fb5e44ecb4fceb",
+    "annotated_types-0.8.0-py3-none-any.whl": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+    "anthropic-2.5.0-py3-none-any.whl": "79756a8cafa23a8c0ab636700914d34ee968039eb6e466a8aa748210713f4c00",
+    "anyio-4.16.0-py3-none-any.whl": "c66ae634e0b8228396b801741beb3294326d4b6102f7bba4041c0dfb58c29026",
+    "apscheduler-3.11.3-py3-none-any.whl": "bbeb2ec02d23d3c06a6c07ed7f0f3939ada6680eb121fae809a69bb42c537a30",
+    "attrs-26.1.0-py3-none-any.whl": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309",
+    "certifi-2026.10.23-py3-none-any.whl": "e9b54de76e530bb6cf0ccd036787103acb58fd42ba930ea8bf948ddbaa2f61d1",
+    "charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "3d31298449090ab8d47b7b1b2a555ff73cac7ed438a08b7ac160980c7ebed649",
+    "docstring_parser-0.18.0-py3-none-any.whl": "b3fcbed555c47d8479be0796ef7e19c2670d428d72e96da63f3a40122860374b",
+    "genai_prices-0.2.1-py3-none-any.whl": "b438753161537f2e2a5c937887721467dd5a24297a52ae77f946f541ce22c3a0",
+    "greenlet-3.5.6-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl": "975736b002ed080d124cf81a79cb7e05cb26d6b3f5c7a7b651c0fcce70353aa1",
+    "griffelib-2.4.1-py3-none-any.whl": "76bc562f936ad1ce198d2cf6d0731bd5c92a7d934b69ef828ef22ee0ffdb62ce",
+    "h11-0.16.0-py3-none-any.whl": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+    "httpcore-1.0.9-py3-none-any.whl": "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+    "httpcore2-2.16.0-py3-none-any.whl": "5c4358319f2602d984ad93182c9fee5160f22e9da7babdda870a5e7c4e2dc34f",
+    "httpx-0.28.1-py3-none-any.whl": "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+    "httpx2-2.16.0-py3-none-any.whl": "fd2c5d7909e8d86fe92d53020c310ca0e4e431b838c207c5754b9bbf0308d49a",
+    "idna-3.20-py3-none-any.whl": "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c",
+    "jiter-0.18.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl": "b3c741e6b778c951a6861964ee475118812a33208426c54fb92bf4e318bda834",
+    "jsonschema-4.26.0-py3-none-any.whl": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce",
+    "jsonschema_specifications-2025.9.1-py3-none-any.whl": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe",
+    "logfire_api-5.4.0-py3-none-any.whl": "00297901da03e350bcf4ebe3d829f3617ebbe62b000e5d53d3c485223c258204",
+    "numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
+    "openai-3.46.0-py3-none-any.whl": "7b650117e9bf539029bf880c2eff94a26f281394f6572284efa5d068d4b1c98e",
+    "opentelemetry_api-1.45.2-py3-none-any.whl": "2cbd737377e710ee740d261c94e93fa0f08e6d037c18f17513cc0a2d94479a34",
+    "packaging-26.3-py3-none-any.whl": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+    "powercontext-1.2.0-py3-none-any.whl": "9bb55ec13bb2fc1ac84038d917042cc2890ffab4aeedacf1cd5ba5329dcb84b9",
+    "pydantic-2.14.3-py3-none-any.whl": "3f7b347782ab7e4cf4c798496ae3a82787d9f21ec12676a9c564355eeef8daa8",
+    "pydantic_ai_slim-2.66.0-py3-none-any.whl": "c47bbd0abe6f51e5400308a53b4f7e3409a582b1459140c381e3d4701a205608",
+    "pydantic_core-2.50.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "c81d98e27d9d9261909dcccab1ba5d6ea1c98b0bb9470e368604614fd1d36ddd",
+    "pydantic_graph-2.66.0-py3-none-any.whl": "5b2a0aafc569c00fdb36879b1e80bed06ed5926979e2c1d44533222f208fd2ec",
+    "pydantic_settings-2.16.2-py3-none-any.whl": "8d523e5c129b097686bde019bd6109bff53f4c8c3f63f1ddf9933ffa42e5ab4f",
+    "pymysql-1.2.0-py3-none-any.whl": "62169ce6d5510f08e140c5e7990ee884a9764024e4a9a27b2cc11f1099322ae0",
+    "pyobvector-0.2.29-py3-none-any.whl": "f7cfdf1ca0c5c6ccbc10fd096aef944cd3970970f1382441a77dff1be78744cf",
+    "python_dotenv-1.2.4-py3-none-any.whl": "42269a8a5b3fd54ffa6f3d84b18abed50064717576b4ecf03dc4a55d8aa04fdc",
+    "pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+    "referencing-0.37.0-py3-none-any.whl": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231",
+    "regex-2026.9.29-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "39ab5894d971f9ac68baa6eca5c50387db579cfcacf36ae8df3feceb1815e6d0",
+    "requests-2.34.2-py3-none-any.whl": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0",
+    "rfc8785-0.1.4-py3-none-any.whl": "520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48",
+    "rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl": "addeda51556dac7c1a2f14cda62db8b621cd12afba3091d03a96c72932387eab",
+    "sniffio-1.3.1-py3-none-any.whl": "2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2",
+    "socksio-1.0.0-py3-none-any.whl": "95dc1f15f9b34e8d7b16f06d74b8ccf48f609af32ab33c608d08761c5dcbb1f3",
+    "sqlalchemy-2.1.8-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "6b9844ecf59d389648cf3ce2b387475f81b02c2d32f16b95a554ca535a68ba13",
+    "sqlglot-30.29.0-py3-none-any.whl": "16e47cc30c48bbf66bd24a680cb6edc2203d4ed4644acf84dd377109ecbe70fc",
+    "sqlite_vec-0.1.9-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux1_x86_64.whl": "1515727990b49e79bcaf75fdee2ffc7d461f8b66905013231251f1c8938e7786",
+    "tiktoken-0.14.0-cp312-cp312-manylinux_2_28_x86_64.whl": "7896eea257fe497a2b7134474d909156c6744ce8da35bce88011a960e008aa0d",
+    "truststore-0.10.5-py3-none-any.whl": "9aaaedaefaf06d8b206278cf8b5012bc897f485a874503501e12d776df78951c",
+    "typing_extensions-4.16.0-py3-none-any.whl": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+    "typing_inspection-0.4.5-py3-none-any.whl": "bc210535442b39e1bf2805e0c7a17dfd6a4ace760c84c7f7d16245d23a6b1c39",
+    "tzlocal-5.4.5-py3-none-any.whl": "ecab534f6d65d9deb4c4ea52c121ab6dd5958e9b878e71dcb102578269752454",
+    "urllib3-2.8.0-py3-none-any.whl": "0cf3cae568d36aa9576b28dfb35f11328f1cb974ca7647d9475ebb86c75ac6e3"
+  }
+}
