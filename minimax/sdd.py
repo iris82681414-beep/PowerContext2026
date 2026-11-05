@@ -50,17 +50,23 @@ def import_repository(root, database):
                                                for path, kind, _, digest in records]}
 
 
-def retrieve(database, task):
+def retrieve(database, task, query_records=None):
     query = ' '.join(re.findall(r'[\w]+', task.lower())[:30])
     if not query:
         raise ValueError('A retrieval query needs at least one word')
     result = []
     with connect(database) as db, db.cursor(pymysql.cursors.DictCursor) as cur:
         for kind in ('specification', 'source', 'test'):
-            cur.execute('SELECT path, kind, body, digest, MATCH(body) AGAINST (%s) AS score '
-                        'FROM engineering_docs WHERE kind=%s AND MATCH(body) AGAINST (%s) > 0 '
-                        'ORDER BY score DESC, path LIMIT 3', (query, kind, query))
-            for row in cur.fetchall():
+            sql = ('SELECT path, kind, body, digest, MATCH(body) AGAINST (%s) AS score '
+                   'FROM engineering_docs WHERE kind=%s AND MATCH(body) AGAINST (%s) > 0 '
+                   'ORDER BY score DESC, path LIMIT 3')
+            parameters = (query, kind, query)
+            cur.execute(sql, parameters)
+            rows = cur.fetchall()
+            if query_records is not None:
+                query_records.append({'sql': sql, 'parameters': parameters,
+                                      'returned_paths': [row['path'] for row in rows]})
+            for row in rows:
                 row['score'] = float(row['score'])
                 result.append(row)
     return result
@@ -104,10 +110,11 @@ def main():
         result = asyncio.run(progress(args.state.resolve(), args.database,
                                       {'done': args.done, 'next': args.next, 'verification': args.verification}))
     else:
-        sources = retrieve(args.database, args.task)
+        queries = []
+        sources = retrieve(args.database, args.task, queries)
         if {item['kind'] for item in sources} != {'specification', 'source', 'test'}:
             parser.error('Refine the task so seekdb returns a specification, source file, and test')
-        result = {'task': args.task, 'sources': sources,
+        result = {'task': args.task, 'sources': sources, 'database_queries': queries,
                   'powercontext_progress': asyncio.run(progress(args.state.resolve(), args.database)),
                   'agent_instruction': 'Use these sources to modify the business module. Preserve the tests and public signature.'}
     print(json.dumps(result, ensure_ascii=False, indent=2))

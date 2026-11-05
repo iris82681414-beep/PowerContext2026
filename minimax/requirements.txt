@@ -1,2 +1,2 @@
-powercontext==1.2.0
+powercontext[builtin,client]==1.2.0
 PyMySQL==1.2.0

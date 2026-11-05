@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/liwangsheng/project/oceanbase/.competition/ecosystem-work/minimax/sdd.py", line 12, in <module>
+    from powercontext.builtin.artifacts.memory import MemoryEntryInput
+  File "/Users/liwangsheng/project/oceanbase/.competition/ecosystem/minimax-local/venv/lib/python3.12/site-packages/powercontext/builtin/artifacts/memory/__init__.py", line 106, in <module>
+    from powercontext.builtin.artifacts.memory.service import MemoryRememberMode, MemoryService
+  File "/Users/liwangsheng/project/oceanbase/.competition/ecosystem/minimax-local/venv/lib/python3.12/site-packages/powercontext/builtin/artifacts/memory/service.py", line 101, in <module>
+    from powercontext.builtin.artifacts.prompt.service import ScopedPrompts, current_prompt, prompt_operation
+  File "/Users/liwangsheng/project/oceanbase/.competition/ecosystem/minimax-local/venv/lib/python3.12/site-packages/powercontext/builtin/artifacts/prompt/service.py", line 27, in <module>
+    from opentelemetry import trace
+ModuleNotFoundError: No module named 'opentelemetry'

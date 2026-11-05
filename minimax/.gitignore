@@ -1,3 +1,7 @@
 .venv/
 .sdd-state/
 __pycache__/
+*.pyc
+.env
+.env.*
+run-evidence/
