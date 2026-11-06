@@ -4,14 +4,33 @@
 
 11 月 6 日已通过官方 MiniMax Agent 国内版、页面选择的 **M3.1-Flash** 完成真实改码。会员无预约时返回 21 天，普通读者仍为 14 天，有预约时均为 0 天。模型原始输出已逐字应用到 `fixture/loan.py`；同一份三项测试修改前为一项预期失败，修改后全部通过。真实 seekdb 1.4 的 Linux 运行还验证了修改后代码检索及 PowerContext 跨独立进程恢复。[请求、原始代码、差异、截图和完整验收](evidence/model-web-20261106/validation.json)。这些是交付证据，尚非平台正式得分。
 
+提交用 [一页技术说明（PDF）](output/pdf/technical-note.pdf)，同内容的可编辑版本在 [TECHNICAL.md](TECHNICAL.md)。
+
 ## 复现
 
-使用 Python 3.12 和可连接的 seekdb 1.4。在 `minimax/` 安装锁定的依赖：
+克隆参赛仓库并进入对应目录：
 
 ```sh
-uv venv --python 3.12 .venv
-uv pip sync --python .venv/bin/python requirements.lock
+git clone --branch 2026-competition-ecosystem https://github.com/iris82681414-beep/PowerContext2026.git
+cd PowerContext2026/minimax
+```
+
+使用 Python 3.12 和可连接的 seekdb 1.4。已有数据库可直接配置连接；新的 Linux 测试环境可按 [官方 Docker 部署说明](https://github.com/oceanbase/docker-images/blob/main/seekdb/README.md) 启动仅监听本机的实例：
+
+```sh
+docker run -d --name minimax-seekdb -p 127.0.0.1:2881:2881 \
+  -v minimax-seekdb-data:/var/lib/seekdb \
+  oceanbase/seekdb:1.4.0-100000172026082615
+```
+
+等待 `mysql -h127.0.0.1 -P2881 -uroot -e 'SELECT VERSION()'` 成功。该默认测试实例使用 root、空密码；连接账号需能创建专用数据库和全文索引。正式验收使用的是既有 Linux seekdb 1.4 实例，上述镜像命令为新环境复现参考。
+
+在 `minimax/` 用 Python 标准虚拟环境安装锁定依赖，不要求预装 uv：
+
+```sh
+python3.12 -m venv .venv
 . .venv/bin/activate
+python -m pip install -r requirements.lock
 ```
 
 设置 `SEEKDB_HOST`、`SEEKDB_PORT`、`SEEKDB_USER` 和 `SEEKDB_PASSWORD`。凭据仅放在本机进程环境中。`ingest` 会替换专用数据库 `sdd_renewal` 中的示例资料，不要使用已有业务数据库。PowerContext 需要 `builtin,client` 可选依赖；只安装基础包会缺少启动模块。
