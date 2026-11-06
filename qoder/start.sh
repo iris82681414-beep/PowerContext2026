@@ -28,7 +28,7 @@ source venv/bin/activate
 # Install dependencies
 echo ""
 echo "安装依赖..."
-pip install -q -r requirements.txt
+pip install -q -r requirements.lock
 
 # Check if .env exists
 if [ ! -f ".env" ]; then
@@ -39,7 +39,7 @@ if [ ! -f ".env" ]; then
     echo ""
     echo "必需的配置项："
     echo "  SEEKDB_HOST=localhost"
-    echo "  SEEKDB_PORT=3306"
+    echo "  SEEKDB_PORT=2881"
     echo "  SEEKDB_USER=your_username"
     echo "  SEEKDB_PASSWORD=your_password"
     echo "  SEEKDB_DATABASE=qoder_workspace"

@@ -174,11 +174,11 @@ cd /Users/liwangsheng/project/oceanbase/.competition/ecosystem-work/qoder
    - 不拼接多段
    - 不添加省略号
    - 保证是原文的子串
-   
+
 2. **显式引用**: 必须验证为原文的真实子串
    - 使用 Python `in` 操作符验证
    - 不合法返回 400 错误
-   
+
 3. **摘要**: 可另行生成
    - 不要求是原文子串
    - 用于概括资料内容

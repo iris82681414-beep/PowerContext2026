@@ -34,3 +34,8 @@ htmlcov/
 
 # Logs
 *.log
+
+.venv/
+.env.*
+!.env.example
+.qoder.site

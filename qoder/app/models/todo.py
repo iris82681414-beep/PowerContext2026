@@ -58,62 +58,8 @@ class Todo:
 
     @staticmethod
     def _extract_quote_from_content(content, max_length=200):
-        """
-        Extract a real continuous fragment from document content.
-
-        The returned quote is always a substring of the original content,
-        never a concatenation of multiple parts.
-        """
-        if not content or not content.strip():
-            return ""
-
-        # Try to find a meaningful continuous fragment
-        # Priority: first non-empty paragraph, then first line, then first N chars
-
-        # Split into paragraphs
-        paragraphs = content.split('\n\n')
-
-        for para in paragraphs:
-            para = para.strip()
-            if not para:
-                continue
-
-            # Skip pure markdown headers
-            if para.startswith('#'):
-                # If it's only headers, continue to next paragraph
-                lines = para.split('\n')
-                non_header_lines = [l for l in lines if not l.strip().startswith('#')]
-                if non_header_lines:
-                    para = '\n'.join(non_header_lines).strip()
-                else:
-                    continue
-
-            # Skip pure code blocks
-            if para.startswith('```') and para.endswith('```'):
-                continue
-
-            # Found a meaningful paragraph
-            if len(para) <= max_length:
-                return para
-            else:
-                # Truncate at word boundary
-                truncated = para[:max_length]
-                # Try to break at space
-                last_space = truncated.rfind(' ')
-                if last_space > max_length * 0.5:
-                    return truncated[:last_space]
-                return truncated
-
-        # Fallback: if no good paragraph found, return first N chars of content
-        # This handles code-only or header-only documents
-        if len(content) <= max_length:
-            return content.strip()
-        else:
-            truncated = content[:max_length].strip()
-            last_space = truncated.rfind(' ')
-            if last_space > max_length * 0.5:
-                return truncated[:last_space]
-            return truncated
+        """Keep quotations as one exact, bounded fragment of the original source."""
+        return content.strip()[:max_length] if content else ""
 
     @staticmethod
     def _extract_summary_from_content(content, max_length=300):

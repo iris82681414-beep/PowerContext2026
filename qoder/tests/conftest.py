@@ -45,7 +45,7 @@ def client(app, setup_database):
 
 
 @pytest.fixture
-def db_connection(app):
+def db_connection(app, setup_database):
     """Get database connection for direct queries."""
     with app.app_context():
         config = TestConfig.get_db_config()

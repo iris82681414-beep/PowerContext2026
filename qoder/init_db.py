@@ -6,6 +6,7 @@ import os
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from app import create_app
 from app.database import init_database
 from app.models.project import Project
 from app.models.document import Document
@@ -26,7 +27,9 @@ def create_sample_data():
     doc1 = Document.create(
         project_id=project['id'],
         title="Python 函数式编程笔记",
-        content="""# Python 函数式编程
+        content="""> 原创演示资料，用于体验导入与检索功能。
+
+# Python 函数式编程
 
 ## 核心概念
 
@@ -70,7 +73,9 @@ squared = list(map(square, numbers))
     doc2 = Document.create(
         project_id=project['id'],
         title="数据库性能测试报告",
-        content="""# 数据库性能测试报告
+        content="""> 原创演示资料：下述数字为虚构教学样例，不是本项目或比赛的实测结果。
+
+# 数据库性能测试报告
 
 ## 测试环境
 
@@ -130,7 +135,9 @@ squared = list(map(square, numbers))
     doc3 = Document.create(
         project_id=project['id'],
         title="项目启动会议纪要",
-        content="""# 项目启动会议纪要
+        content="""> 原创演示资料：人物、会议和任务安排均为示例。
+
+# 项目启动会议纪要
 
 ## 会议信息
 
@@ -203,10 +210,11 @@ squared = list(map(square, numbers))
 
 
 if __name__ == '__main__':
-    print("初始化数据库...")
-    init_database()
+    with create_app().app_context():
+        print("初始化数据库...")
+        init_database()
 
-    print("\n创建样例数据...")
-    create_sample_data()
+        print("\n创建样例数据...")
+        create_sample_data()
 
-    print("\n数据库初始化完成！")
+        print("\n数据库初始化完成！")

@@ -28,6 +28,7 @@ class Database:
                 'password': config['SEEKDB_PASSWORD'],
                 'database': config['SEEKDB_DATABASE'],
                 'charset': 'utf8mb4',
+                'init_command': "SET time_zone = '+00:00'",
                 'cursorclass': pymysql.cursors.DictCursor
             }
             g.db_conn = pymysql.connect(**db_config)

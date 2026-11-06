@@ -881,3 +881,30 @@ Python广泛应用于Web开发、数据科学、人工智能等领域。
         # The auto-generated quote must be a continuous substring of the original content
         assert todo['quoted_text'] in doc_content
         assert len(todo['quoted_text']) > 0
+
+
+def test_mixed_markdown_quote_remains_literal(client):
+    """Headings interleaved with body lines must not fabricate a quotation."""
+    project = client.post('/api/projects', json={'name': 'Markdown引用验收'}).get_json()
+    content = '# 第一节\n实际第一行\n# 第二节\n实际第二行\n```python\nprint(1)\n```'
+    document = client.post('/api/documents', json={
+        'project_id': project['id'], 'title': '连续原文片段', 'content': content}).get_json()
+    response = client.post('/api/todos', json={
+        'project_id': project['id'], 'document_id': document['id'], 'title': '保留真实原文'})
+    assert response.status_code == 201
+    quote = response.get_json()['quoted_text']
+    assert quote
+    assert quote in content
+
+
+def test_project_timestamp_matches_database_instant(client):
+    """The public timestamp must represent the instant stored by the database."""
+    from email.utils import parsedate_to_datetime
+    from app.database import db
+
+    response = client.post('/api/projects', json={'name': '时间一致性验收'})
+    assert response.status_code == 201
+    project = response.get_json()
+    stored = db.fetch_one('SELECT UNIX_TIMESTAMP(created_at) AS epoch FROM projects WHERE id=%s',
+                          (project['id'],))
+    assert int(parsedate_to_datetime(project['created_at']).timestamp()) == int(stored['epoch'])

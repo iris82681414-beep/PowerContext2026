@@ -1,0 +1,141 @@
+{
+  "database_version": "5.7.25-OceanBase seekdb-v1.4.0.0",
+  "fulltext_index_ddl": "CREATE TABLE `documents` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `project_id` int(11) NOT NULL,\n  `title` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,\n  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,\n  `source_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'imported',\n  `source_identifier` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,\n  `imported_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  `version` int(11) DEFAULT '1',\n  PRIMARY KEY (`id`),\n  CONSTRAINT `documents_OBFK_1793939866392681` FOREIGN KEY (`project_id`) REFERENCES `qoder_acceptance_nov6_v2`.`projects`(`id`) ON UPDATE RESTRICT ON DELETE CASCADE ,\n  FULLTEXT KEY `ft_idx_doc_content` (`title`, `content`) WITH PARSER ngram PARSER_PROPERTIES=(ngram_token_size=2) BLOCK_SIZE 16384\n) ORGANIZATION INDEX AUTO_INCREMENT = 43 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC COMPRESSION = 'zstd_1.3.8' BLOCK_SIZE = 16384 TABLET_SIZE = 134217728 PCTFREE = 0",
+  "server_command": [
+    "/Users/liwangsheng/project/oceanbase/.competition/ecosystem/qoder-cn-local/app-venv/bin/python",
+    "-m",
+    "app.main"
+  ],
+  "runs": [
+    {
+      "label": "before-restart",
+      "pid": 76569,
+      "exit_code": -15
+    },
+    {
+      "label": "after-restart",
+      "pid": 76600,
+      "exit_code": -15
+    }
+  ],
+  "source_sha256": {
+    "app/__init__.py": "0155909dc18f804445517744dcd822bdf49c0fe0b1d689b477a3e08ab47c25db",
+    "app/config.py": "b232cb0e8a57dc4298dec7e9c6d6f00259fac5823f4fe9f2df72ae5cd85dbad2",
+    "app/database.py": "05f7c6d70de5904bdce2017dbb2174063fe67ce88d2a447afec6a820f8e9ee0e",
+    "app/main.py": "490bb2164583086be4baf8092cdbdbfaeca3252b75ce16e3f3d941590cfe1681",
+    "app/models/__init__.py": "3fa5ff38394a454a6bbcb586b8ca3f254b8374c145ddd1f3bb110e01f7c0fb2f",
+    "app/models/document.py": "0f96dada58da56ef9692beb067210a59205ca08959ed1a8de18e94f46fce98b1",
+    "app/models/project.py": "4c52f120e5c10646e664e5c5e1bb7f220d101556a031e28b0218ed22442f2b1f",
+    "app/models/todo.py": "e699a1f5f82637bb4844e713eeacb5227560bca96b40d16d0948d83788319295",
+    "app/routes/__init__.py": "f1d45672edc1649a5be90eba84daccaddb8f0e71e6f4d45c7353c8e61ba4a6b2",
+    "app/routes/documents.py": "3c0c2776bb77ae27e5c853b5c3f9e24e7c0896c6f12bc595df4b32ebf2a1728a",
+    "app/routes/projects.py": "0e71ed93baedcb9217108520c21f489978d291814cd6ac8f40736650b1162328",
+    "app/routes/search.py": "7a159b766b9b00e29b0de766295645c5fbd46d817f25049f60c177ec69734d63",
+    "app/routes/todos.py": "e38a5db3ea155a7bb67de3c08dee016ddde75e8a95628e25fc0f844e184ac43e"
+  },
+  "before_restart": {
+    "project": {
+      "created_at": "Fri, 06 Nov 2026 04:39:52 GMT",
+      "description": null,
+      "id": 45,
+      "name": "独立进程验收项目",
+      "updated_at": "Fri, 06 Nov 2026 04:39:52 GMT"
+    },
+    "document": {
+      "content": "独立进程重启后仍须保留的真实资料，以及待办的原始引用。",
+      "id": 43,
+      "imported_at": "Fri, 06 Nov 2026 04:39:52 GMT",
+      "project_id": 45,
+      "project_name": "独立进程验收项目",
+      "source_identifier": "process-acceptance.txt",
+      "source_type": "imported",
+      "title": "真实重启验收资料",
+      "updated_at": "Fri, 06 Nov 2026 04:39:52 GMT",
+      "version": 1
+    },
+    "todo": {
+      "created_at": "Fri, 06 Nov 2026 04:39:54 GMT",
+      "current_document_version": 1,
+      "description": null,
+      "document_id": 43,
+      "document_summary": "独立进程重启后仍须保留的真实资料，以及待办的原始引用。",
+      "document_title": "真实重启验收资料",
+      "document_updated": false,
+      "document_version": 1,
+      "id": 17,
+      "project_id": 45,
+      "project_name": "独立进程验收项目",
+      "quoted_text": "独立进程重启",
+      "source_identifier": "process-acceptance.txt",
+      "status": "in_progress",
+      "title": "验证跨进程恢复",
+      "updated_at": "Fri, 06 Nov 2026 04:39:54 GMT"
+    }
+  },
+  "after_restart": {
+    "project": {
+      "created_at": "Fri, 06 Nov 2026 04:39:52 GMT",
+      "description": null,
+      "id": 45,
+      "name": "独立进程验收项目",
+      "statistics": {
+        "document_count": 1,
+        "todo_completed": 0,
+        "todo_in_progress": "1",
+        "todo_pending": 0,
+        "todo_total": 1
+      },
+      "updated_at": "Fri, 06 Nov 2026 04:39:52 GMT"
+    },
+    "document": {
+      "content": "独立进程重启后仍须保留的真实资料，以及待办的原始引用。",
+      "id": 43,
+      "imported_at": "Fri, 06 Nov 2026 04:39:52 GMT",
+      "project_id": 45,
+      "project_name": "独立进程验收项目",
+      "source_identifier": "process-acceptance.txt",
+      "source_type": "imported",
+      "title": "真实重启验收资料",
+      "updated_at": "Fri, 06 Nov 2026 04:39:52 GMT",
+      "version": 1
+    },
+    "todo": {
+      "created_at": "Fri, 06 Nov 2026 04:39:54 GMT",
+      "current_document_version": 1,
+      "description": null,
+      "document_id": 43,
+      "document_summary": "独立进程重启后仍须保留的真实资料，以及待办的原始引用。",
+      "document_title": "真实重启验收资料",
+      "document_updated": false,
+      "document_version": 1,
+      "id": 17,
+      "project_id": 45,
+      "project_name": "独立进程验收项目",
+      "quoted_text": "独立进程重启",
+      "source_identifier": "process-acceptance.txt",
+      "status": "in_progress",
+      "title": "验证跨进程恢复",
+      "updated_at": "Fri, 06 Nov 2026 04:39:54 GMT"
+    },
+    "search": {
+      "count": 1,
+      "project_id": 45,
+      "query": "独立进程",
+      "results": [
+        {
+          "content": "独立进程重启后仍须保留的真实资料，以及待办的原始引用。",
+          "content_preview": "独立进程重启后仍须保留的真实资料，以及待办的原始引用。",
+          "highlight": "独立进程重启后仍须保留的真实资料，以及待办的原始引用。",
+          "id": 43,
+          "imported_at": "Fri, 06 Nov 2026 04:39:52 GMT",
+          "project_id": 45,
+          "relevance": 0.41250000000000003,
+          "source_identifier": "process-acceptance.txt",
+          "title": "真实重启验收资料",
+          "version": 1
+        }
+      ]
+    }
+  },
+  "independent_restart_passed": true
+}
