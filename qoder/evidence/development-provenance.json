@@ -1,0 +1,105 @@
+{
+  "kind": "Source-byte provenance from actual Qoder Write events and preserved Git checkpoint",
+  "checkpoint": "037bcbf6",
+  "final_code_commit": "6e77cbcb0f78b6afd09396c3af11e6bd64b0f0cd",
+  "session_id": "890f071a-551b-416a-8610-8281599948f4",
+  "files": [
+    {
+      "path": "qoder/app/__init__.py",
+      "checkpoint_sha256": "0155909dc18f804445517744dcd822bdf49c0fe0b1d689b477a3e08ab47c25db",
+      "last_qoder_write_sha256": "0155909dc18f804445517744dcd822bdf49c0fe0b1d689b477a3e08ab47c25db",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/app/config.py",
+      "checkpoint_sha256": "1f5676b443c6505fa2c70d5f18797d9f039a4646329b7460a4fa0cb6c61b41b7",
+      "last_qoder_write_sha256": "1f5676b443c6505fa2c70d5f18797d9f039a4646329b7460a4fa0cb6c61b41b7",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/app/database.py",
+      "checkpoint_sha256": "dc690d2e597b03f4f0d39ca667e6f8d5ba1f1d21e09140f724fd30cda9d208c5",
+      "last_qoder_write_sha256": "dc690d2e597b03f4f0d39ca667e6f8d5ba1f1d21e09140f724fd30cda9d208c5",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/app/main.py",
+      "checkpoint_sha256": "490bb2164583086be4baf8092cdbdbfaeca3252b75ce16e3f3d941590cfe1681",
+      "last_qoder_write_sha256": "490bb2164583086be4baf8092cdbdbfaeca3252b75ce16e3f3d941590cfe1681",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/app/models/__init__.py",
+      "checkpoint_sha256": "3fa5ff38394a454a6bbcb586b8ca3f254b8374c145ddd1f3bb110e01f7c0fb2f",
+      "last_qoder_write_sha256": "3fa5ff38394a454a6bbcb586b8ca3f254b8374c145ddd1f3bb110e01f7c0fb2f",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/app/models/document.py",
+      "checkpoint_sha256": "0f96dada58da56ef9692beb067210a59205ca08959ed1a8de18e94f46fce98b1",
+      "last_qoder_write_sha256": "0f96dada58da56ef9692beb067210a59205ca08959ed1a8de18e94f46fce98b1",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/app/models/project.py",
+      "checkpoint_sha256": "4c52f120e5c10646e664e5c5e1bb7f220d101556a031e28b0218ed22442f2b1f",
+      "last_qoder_write_sha256": "4c52f120e5c10646e664e5c5e1bb7f220d101556a031e28b0218ed22442f2b1f",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/app/models/todo.py",
+      "checkpoint_sha256": "089cfaf7ed3124c644810dd302e497923fd3ab0e05e15a21fd0158d419e86de8",
+      "last_qoder_write_sha256": "9f52039d2143ce97c303efeee9f77f94cf45246d4169a86f330077e1561c1e5c",
+      "exact_write_match": false
+    },
+    {
+      "path": "qoder/app/routes/__init__.py",
+      "checkpoint_sha256": "f1d45672edc1649a5be90eba84daccaddb8f0e71e6f4d45c7353c8e61ba4a6b2",
+      "last_qoder_write_sha256": "f1d45672edc1649a5be90eba84daccaddb8f0e71e6f4d45c7353c8e61ba4a6b2",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/app/routes/documents.py",
+      "checkpoint_sha256": "3c0c2776bb77ae27e5c853b5c3f9e24e7c0896c6f12bc595df4b32ebf2a1728a",
+      "last_qoder_write_sha256": "4629cdfe1c7d650ef4a13de80fc2d2861f6064d3be860eacc7163cf40001e997",
+      "exact_write_match": false
+    },
+    {
+      "path": "qoder/app/routes/projects.py",
+      "checkpoint_sha256": "0e71ed93baedcb9217108520c21f489978d291814cd6ac8f40736650b1162328",
+      "last_qoder_write_sha256": "0e71ed93baedcb9217108520c21f489978d291814cd6ac8f40736650b1162328",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/app/routes/search.py",
+      "checkpoint_sha256": "7a159b766b9b00e29b0de766295645c5fbd46d817f25049f60c177ec69734d63",
+      "last_qoder_write_sha256": "7a159b766b9b00e29b0de766295645c5fbd46d817f25049f60c177ec69734d63",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/app/routes/todos.py",
+      "checkpoint_sha256": "e38a5db3ea155a7bb67de3c08dee016ddde75e8a95628e25fc0f844e184ac43e",
+      "last_qoder_write_sha256": "e38a5db3ea155a7bb67de3c08dee016ddde75e8a95628e25fc0f844e184ac43e",
+      "exact_write_match": true
+    },
+    {
+      "path": "qoder/static/css/style.css",
+      "checkpoint_sha256": "f064cf32f0e4e00c0c4cf367145362a57cb7a3c8416616fa64fc0e856023b9b9",
+      "last_qoder_write_sha256": "b83b027093759eff4e27683b6334070e88f6e99032a3b727104bdb1ecf917ced",
+      "exact_write_match": false
+    },
+    {
+      "path": "qoder/static/js/app.js",
+      "checkpoint_sha256": "18793722ab8c23e23598f69c077d5086c0256c4463bf295aaba0928cfba5c66b",
+      "last_qoder_write_sha256": "ada988e4b02772402e0bf97454a63e01b5c2e868c91b56b61e58ef4452af96d8",
+      "exact_write_match": false
+    },
+    {
+      "path": "qoder/templates/index.html",
+      "checkpoint_sha256": "b7fc7308d7c11eed904fb4e0d3ddf3f88942241edd40f31c38b0f5027928fb3a",
+      "last_qoder_write_sha256": "4bba63bc97d472fcb582bb0387db77cea004424b2d0c276d353eecc83d7e0267",
+      "exact_write_match": false
+    }
+  ],
+  "note": "Only exact hashes count as matches. Codex integration corrections are described separately; no claim that all final files are unchanged Qoder output."
+}
