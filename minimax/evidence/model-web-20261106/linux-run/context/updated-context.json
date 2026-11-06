@@ -1,0 +1,80 @@
+{
+  "task": "renewal",
+  "sources": [
+    {
+      "path": "policy.md",
+      "kind": "specification",
+      "body": "# Renewal policy v1\n\nLoan renewal normally grants 14 days. Members receive a 28-day renewal when nobody else has reserved the item. Any reservation prevents renewal for all borrowers. Keep the function signature and the existing reservation and ordinary borrower behavior.\n",
+      "digest": "22bfcd63af50160ed3b8da626615d7e8b497401302842a6e6b862271663b1d36",
+      "score": 0.30640668523676884
+    },
+    {
+      "path": "loan.py",
+      "kind": "source",
+      "body": "\"\"\"Loan renewal business rules.\"\"\"\n\ndef renewal_days(*, member: bool, has_reservation: bool) -> int:\n    if has_reservation:\n        return 0\n    return 14\n",
+      "digest": "b03984a1c1aa964e716f39eb52c049d44ae1745b456c92dd875b26e4a7deacfb",
+      "score": 0.21484375000000006
+    },
+    {
+      "path": "test_loan.py",
+      "kind": "test",
+      "body": "\"\"\"Regression checks for loan renewal.\"\"\"\n\nimport unittest\n\nfrom loan import renewal_days\n\n\nclass RenewalTests(unittest.TestCase):\n    def test_member_renewal(self):\n        self.assertEqual(renewal_days(member=True, has_reservation=False), 21)\n\n    def test_regular_renewal(self):\n        self.assertEqual(renewal_days(member=False, has_reservation=False), 14)\n\n    def test_reservation_prevents_renewal(self):\n        for member in (True, False):\n            with self.subTest(member=member):\n                self.assertEqual(renewal_days(member=member, has_reservation=True), 0)\n\n\nif __name__ == '__main__':\n    unittest.main()\n",
+      "digest": "a59fa7038ff67710b1c618258717e763c2b7276d837d0f2cf473eda2308b7f58",
+      "score": 0.08928571428571427
+    }
+  ],
+  "database_queries": [
+    {
+      "sql": "SELECT path, kind, body, digest, MATCH(body) AGAINST (%s) AS score FROM engineering_docs WHERE kind=%s AND MATCH(body) AGAINST (%s) > 0 ORDER BY score DESC, path LIMIT 3",
+      "parameters": [
+        "renewal",
+        "specification",
+        "renewal"
+      ],
+      "returned_paths": [
+        "policy.md"
+      ]
+    },
+    {
+      "sql": "SELECT path, kind, body, digest, MATCH(body) AGAINST (%s) AS score FROM engineering_docs WHERE kind=%s AND MATCH(body) AGAINST (%s) > 0 ORDER BY score DESC, path LIMIT 3",
+      "parameters": [
+        "renewal",
+        "source",
+        "renewal"
+      ],
+      "returned_paths": [
+        "loan.py"
+      ]
+    },
+    {
+      "sql": "SELECT path, kind, body, digest, MATCH(body) AGAINST (%s) AS score FROM engineering_docs WHERE kind=%s AND MATCH(body) AGAINST (%s) > 0 ORDER BY score DESC, path LIMIT 3",
+      "parameters": [
+        "renewal",
+        "test",
+        "renewal"
+      ],
+      "returned_paths": [
+        "test_loan.py"
+      ]
+    }
+  ],
+  "powercontext_progress": [
+    {
+      "state": {
+        "done": "Reproduced the missing member renewal behavior",
+        "next": "Use MiniMax to implement member renewal while preserving the tests",
+        "verification": "Same three tests: member renewal 14 != 21; ordinary and reservation behavior pass"
+      },
+      "citation": {
+        "memory_ref": {
+          "family": "memory",
+          "artifact_id": "memory",
+          "revision": 1
+        },
+        "entry_id": "mem_ent_811a387fce6146f493223e5cbb2767a4",
+        "entry_version_id": "mem_ver_3c426536e98a4cf99e06ee5a95f8cb47"
+      }
+    }
+  ],
+  "agent_instruction": "Use these sources to modify the business module. Preserve the tests and public signature."
+}

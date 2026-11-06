@@ -1,0 +1,37 @@
+{
+  "client": "MiniMax Agent CN web",
+  "model_selected": "M3.1-Flash",
+  "model_label_source": "visible model picker on the actual conversation",
+  "conversation_url": "https://agent.minimax.cn/mavis?id=460322752746509",
+  "request_file": "request.txt",
+  "context_file": "context.json",
+  "generated_module": "generated-loan.py",
+  "screenshot": "model-result.jpg",
+  "actual_model_response_received": true,
+  "retrieved_source_sha256": {
+    "policy.md": "429f0628b6c0abbe7a303d36ab40cfb66c09e7d6201ecd366d1963e440c32b48",
+    "loan.py": "b03984a1c1aa964e716f39eb52c049d44ae1745b456c92dd875b26e4a7deacfb",
+    "test_loan.py": "a59fa7038ff67710b1c618258717e763c2b7276d837d0f2cf473eda2308b7f58"
+  },
+  "generated_module_sha256": "bac6655e0a39ed7db69983f1fbbc2e0de03dea35fb1be954a1c3f308419b5423",
+  "applied_module_sha256": "bac6655e0a39ed7db69983f1fbbc2e0de03dea35fb1be954a1c3f308419b5423",
+  "tests_unchanged_sha256": "a59fa7038ff67710b1c618258717e763c2b7276d837d0f2cf473eda2308b7f58",
+  "baseline_test_exit": 1,
+  "after_test_exit": 0,
+  "tests_run": 3,
+  "credential_policy": "no keys, cookies, OTP, browser storage or model reasoning included",
+  "funding": "existing account daily check-in credits; no purchase",
+  "notes": [
+    "Initial request failed with insufficient balance; retry after daily check-in succeeded.",
+    "Model-reported test claims are not the acceptance evidence; the saved before/after test outputs were independently executed.",
+    "Qoder provider MiniMax attempts failed; the successful output came from the official MiniMax web conversation."
+  ],
+  "platform_submission_completed": false,
+  "linux_evidence_complete": true,
+  "local_requirements_complete": true,
+  "linux_summary": "linux-run/summary.json",
+  "linux_tests_passed": 3,
+  "independent_process_state_reuse": true,
+  "updated_code_retrieved_from_seekdb": true,
+  "formal_score": null
+}

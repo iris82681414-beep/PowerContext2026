@@ -1,0 +1,16 @@
+test_member_renewal (test_loan.RenewalTests.test_member_renewal) ... FAIL
+test_regular_renewal (test_loan.RenewalTests.test_regular_renewal) ... ok
+test_reservation_prevents_renewal (test_loan.RenewalTests.test_reservation_prevents_renewal) ... ok
+
+======================================================================
+FAIL: test_member_renewal (test_loan.RenewalTests.test_member_renewal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/root/oceanbase2026/minimax-final-nov6/baseline/test_loan.py", line 10, in test_member_renewal
+    self.assertEqual(renewal_days(member=True, has_reservation=False), 21)
+AssertionError: 14 != 21
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+FAILED (failures=1)

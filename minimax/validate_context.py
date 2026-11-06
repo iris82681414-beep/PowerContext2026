@@ -26,13 +26,18 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--database', required=True, help='Dedicated sdd_ sample database; its documents are replaced')
     parser.add_argument('--output', type=Path, required=True, help='New evidence directory')
+    parser.add_argument('--root', type=Path, default=HERE / 'baseline',
+                        help='Original business project, including its expected failing member test')
     args = parser.parse_args()
+    baseline_root = args.root.resolve()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     state_path = output / 'memory.db'
     report = {'context_validation_complete': False, 'contest_ready': False,
               'minimax_called': False, 'target_fix_complete': False, 'commands': [],
               'python': platform.python_version(),
+              'baseline_root': str(baseline_root),
+              'baseline_sha256': {p.name: digest(p) for p in sorted(baseline_root.glob('*.*')) if p.is_file()},
               'packages': {d.metadata['Name']: d.version for d in distributions()},
               'source_sha256': {str(p.relative_to(HERE)): digest(p)
                                 for p in [HERE / 'sdd.py', HERE / 'request_patch.py',
@@ -80,12 +85,12 @@ def main():
             with db.cursor() as cursor:
                 cursor.execute('SELECT VERSION()')
                 report['database_version'] = cursor.fetchone()[0]
-        sdd('ingest', ['ingest'])
+        sdd('ingest', ['ingest', '--root', str(baseline_root)])
         initial = sdd('initial-context', ['prepare', 'renewal'])
-        sources = check_context(initial, HERE / 'fixture')
+        sources = check_context(initial, baseline_root)
         if initial['powercontext_progress']:
             raise RuntimeError('Validation must start with empty task state')
-        baseline = run('baseline-tests', ['-m', 'unittest', 'discover', '-s', 'fixture', '-v'], expected_exit=1)
+        baseline = run('baseline-tests', ['-m', 'unittest', 'discover', '-s', str(baseline_root), '-v'], expected_exit=1)
         if not all(s in baseline.stderr for s in ['FAIL: test_member_renewal', '14 != 21',
                                                   'Ran 3 tests', 'FAILED (failures=1)']):
             raise RuntimeError('Baseline must fail because of the specified behavior, not an environment error')
@@ -95,12 +100,12 @@ def main():
                                      '--next', 'Use MiniMax to implement member renewal while preserving the tests',
                                      '--verification', verification])
         resumed = sdd('resumed-context', ['prepare', 'renewal'])
-        check_context(resumed, HERE / 'fixture')
+        check_context(resumed, baseline_root)
         if not any(p['state']['done'] == done and p['state']['verification'] == verification
                    and p['citation'] == remembered['citation'] for p in resumed['powercontext_progress']):
             raise RuntimeError('The independent prepare process did not reuse the saved task state')
         updated_root = output / 'updated-fixture'
-        shutil.copytree(HERE / 'fixture', updated_root, ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+        shutil.copytree(baseline_root, updated_root, ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
         policy = updated_root / 'policy.md'
         body = policy.read_text()
         if body.count('21-day') != 1:
@@ -112,10 +117,10 @@ def main():
         updated_sources = check_context(updated, updated_root)
         if updated_sources['policy.md']['digest'] == sources['policy.md']['digest']:
             raise RuntimeError('The updated specification was not retrieved')
-        sdd('restore-ingest', ['ingest'])
+        sdd('restore-ingest', ['ingest', '--root', str(baseline_root)])
         changed_database = False
         final = sdd('model-ready-context', ['prepare', 'renewal'])
-        check_context(final, HERE / 'fixture')
+        check_context(final, baseline_root)
         if any(digest(HERE / name) != sha for name, sha in report['source_sha256'].items()):
             raise RuntimeError('Source or tests changed during validation')
         report.update(context_validation_complete=True,
@@ -132,7 +137,7 @@ def main():
         raise
     finally:
         if changed_database:
-            sdd('restore-after-failure', ['ingest'])
+            sdd('restore-after-failure', ['ingest', '--root', str(baseline_root)])
 
 
 if __name__ == '__main__':

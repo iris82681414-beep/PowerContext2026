@@ -1,0 +1,25 @@
+{
+  "database": "seekdb",
+  "imported": [
+    {
+      "path": "inventory.md",
+      "kind": "specification",
+      "sha256": "6ba7d251210b5fea3c89c4d0aee62169519ed93c2228b20a8104bd5f11498cda"
+    },
+    {
+      "path": "loan.py",
+      "kind": "source",
+      "sha256": "bac6655e0a39ed7db69983f1fbbc2e0de03dea35fb1be954a1c3f308419b5423"
+    },
+    {
+      "path": "policy.md",
+      "kind": "specification",
+      "sha256": "429f0628b6c0abbe7a303d36ab40cfb66c09e7d6201ecd366d1963e440c32b48"
+    },
+    {
+      "path": "test_loan.py",
+      "kind": "test",
+      "sha256": "a59fa7038ff67710b1c618258717e763c2b7276d837d0f2cf473eda2308b7f58"
+    }
+  ]
+}
