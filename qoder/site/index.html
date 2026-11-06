@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资料到行动 - 项目介绍</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="container">
+            <h1>资料到行动</h1>
+            <p class="tagline">面向学习和项目工作的资料检索与待办工作台</p>
+            <div class="badges">
+                <span class="badge">seekdb 1.4</span>
+                <span class="badge">Python 3.12</span>
+                <span class="badge">Flask</span>
+                <span class="badge">中文全文搜索</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container">
+            <a href="#pain-points">用户痛点</a>
+            <a href="#features">核心功能</a>
+            <a href="#tech">技术分工</a>
+            <a href="#run">运行步骤</a>
+            <a href="#code">代码链接</a>
+            <a href="#status">验证状态</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="pain-points" class="section">
+            <h2>用户痛点</h2>
+            <div class="pain-points-grid">
+                <div class="pain-card">
+                    <div class="pain-icon">📚</div>
+                    <h3>资料分散</h3>
+                    <p>课程笔记、实验记录和会议纪要散落在不同地方，难以统一管理</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">🔍</div>
+                    <h3>检索困难</h3>
+                    <p>找到一段资料后，还要手动记下出处，下次使用时又找不到来源</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">✅</div>
+                    <h3>行动脱节</h3>
+                    <p>查到资料后需要手动转成待办，进度跟踪和资料引用分离</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">🔄</div>
+                    <h3>版本混乱</h3>
+                    <p>资料更新后，之前的引用和待办无法追踪来源变更</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <h2>核心功能</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <h3>📁 项目管理</h3>
+                    <p>创建和管理多个项目，组织相关资料和待办事项</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📄 资料导入</h3>
+                    <p>支持 UTF-8 Markdown 和纯文本文件上传，也支持文本粘贴导入</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔎 中文全文检索</h3>
+                    <p>基于 seekdb 1.4 的全文搜索，支持中文分词，可按项目范围过滤</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔗 可追溯引用</h3>
+                    <p>每个待办必须关联资料来源，自动填充引用文本和摘要，确保可追溯性</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📊 版本追踪</h3>
+                    <p>资料更新时自动提示引用来源已变更，保留原引用内容供核对</p>
+                </div>
+                <div class="feature-item">
+                    <h3>✅ 待办管理</h3>
+                    <p>支持未开始、进行中、完成三种状态，与资料引用紧密结合</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="screenshot" class="section">
+            <h2>应用截图</h2>
+            <div class="screenshot-container">
+                <img src="assets/app-overview.jpg" alt="应用界面截图" class="screenshot">
+                <p class="screenshot-note">截图位置：site/assets/app-overview.jpg（实际运行后补入）</p>
+            </div>
+        </section>
+
+        <section id="tech" class="section">
+            <h2>技术分工</h2>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3>后端</h3>
+                    <ul>
+                        <li>Python 3.12</li>
+                        <li>Flask 3.0.0</li>
+                        <li>PyMySQL 1.2.0</li>
+                        <li>参数化 SQL 查询</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>数据库</h3>
+                    <ul>
+                        <li>seekdb 1.4（默认端口 2881）</li>
+                        <li>Full-Text Search + ngram</li>
+                        <li>中文分词支持</li>
+                        <li>环境变量配置</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>前端</h3>
+                    <ul>
+                        <li>原生 HTML + CSS + JavaScript</li>
+                        <li>响应式设计</li>
+                        <li>中文界面</li>
+                        <li>无构建依赖</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <h3>测试</h3>
+                    <ul>
+                        <li>pytest 7.4.3</li>
+                        <li>43 项集成测试</li>
+                        <li>覆盖全部业务场景</li>
+                        <li>真实数据库验证</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="run" class="section">
+            <h2>运行步骤</h2>
+            <div class="run-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>克隆代码</h3>
+                        <code>git clone &lt;repository-url&gt;</code>
+                        <code>cd qoder</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>创建虚拟环境</h3>
+                        <code>python3 -m venv venv</code>
+                        <code>source venv/bin/activate</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>安装依赖</h3>
+                        <code>pip install -r requirements.txt</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>配置数据库</h3>
+                        <code>cp .env.example .env</code>
+                        <p>编辑 .env 文件，配置 seekdb 连接（默认端口 2881）</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>初始化数据库</h3>
+                        <code>python init_db.py</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>启动应用</h3>
+                        <code>python -m app.main</code>
+                        <p>访问 <a href="http://127.0.0.1:5000" target="_blank">http://127.0.0.1:5000</a></p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">7</div>
+                    <div class="step-content">
+                        <h3>运行测试</h3>
+                        <code>python -m pytest tests/ -v</code>
+                    </div>
+                </div>
+            </div>
+            <div class="note">
+                <strong>注意：</strong>本页面是项目介绍与本地复现入口。实际应用需要通过上述步骤启动，连接 seekdb 数据库运行。此静态页面本身不连接数据库。
+            </div>
+        </section>
+
+        <section id="code" class="section">
+            <h2>代码链接</h2>
+            <div class="code-links">
+                <a href="https://github.com/iris82681414-beep/PowerContext2026/tree/2026-competition-ecosystem/qoder" 
+                   target="_blank" 
+                   class="code-link">
+                    <span class="link-icon">📦</span>
+                    <span class="link-text">GitHub 仓库</span>
+                    <span class="link-arrow">→</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="status" class="section">
+            <h2>验证状态</h2>
+            <div class="status-card">
+                <div class="status-header">
+                    <span class="status-icon">🔄</span>
+                    <h3>验证进行中</h3>
+                </div>
+                <div class="status-details">
+                    <p><strong>首轮测试：</strong>27 通过，1 失败（共 28 项）</p>
+                    <p><strong>次轮测试：</strong>40 通过，1 失败（共 41 项）</p>
+                    <p><strong>最新测试：</strong>43 项（待实际运行验证）</p>
+                    <p class="status-note">实际验证结果将由评审人员运行测试后确认</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <h2>关于本项目</h2>
+            <div class="about-content">
+                <p>本项目为 2026 竞赛生态赛道参赛作品，基于 seekdb 1.4 数据库实现中文全文检索与待办管理功能。</p>
+                <p><strong>开发工具：</strong>Qoder CN</p>
+                <p><strong>开发时间：</strong>2026年11月</p>
+                <p><strong>项目基础：</strong>2026-competition-ecosystem 历史分支</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>资料到行动 - 项目介绍页面</p>
+            <p class="footer-note">本页面为静态展示，不包含实时数据库连接。实际应用请按照运行步骤本地部署。</p>
+        </div>
+    </footer>
+</body>
+</html>

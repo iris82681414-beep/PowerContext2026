@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资料到行动 - 资料检索与待办工作台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>资料到行动</h1>
+            <p class="subtitle">面向学习和项目工作的资料检索与待办工作台</p>
+        </header>
+
+        <nav class="project-nav">
+            <div class="project-selector">
+                <label for="current-project">当前项目：</label>
+                <select id="current-project">
+                    <option value="">请选择项目</option>
+                </select>
+                <button id="new-project-btn" class="btn btn-primary">新建项目</button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <section class="panel import-panel">
+                <h2>导入资料</h2>
+
+                <!-- Tab buttons -->
+                <div class="tab-buttons">
+                    <button type="button" class="tab-btn active" data-tab="paste">粘贴文本</button>
+                    <button type="button" class="tab-btn" data-tab="upload">上传文件</button>
+                </div>
+
+                <!-- Paste tab -->
+                <div id="paste-tab" class="tab-content active">
+                    <form id="import-form">
+                        <div class="form-group">
+                            <label for="doc-title">标题</label>
+                            <input type="text" id="doc-title" required placeholder="输入资料标题">
+                        </div>
+                        <div class="form-group">
+                            <label for="doc-source">来源标识</label>
+                            <input type="text" id="doc-source" placeholder="例如：课程笔记、会议纪要">
+                        </div>
+                        <div class="form-group">
+                            <label for="doc-content">内容（支持 Markdown）</label>
+                            <textarea id="doc-content" rows="10" required placeholder="粘贴或输入资料内容..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">导入资料</button>
+                    </form>
+                </div>
+
+                <!-- Upload tab -->
+                <div id="upload-tab" class="tab-content">
+                    <form id="upload-form" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="file-input">选择文件（.md 或 .txt，UTF-8 编码，最大 10MB）</label>
+                            <input type="file" id="file-input" accept=".md,.txt,.markdown" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="upload-title">标题（可选，默认使用文件名）</label>
+                            <input type="text" id="upload-title" placeholder="输入资料标题">
+                        </div>
+                        <div class="form-group">
+                            <label for="upload-source">来源标识（可选）</label>
+                            <input type="text" id="upload-source" placeholder="例如：课程笔记、会议纪要">
+                        </div>
+                        <button type="submit" class="btn btn-primary">上传文件</button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="panel search-panel">
+                <h2>全文检索</h2>
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="输入关键词搜索...">
+                    <button id="search-btn" class="btn btn-primary">搜索</button>
+                </div>
+                <div id="search-results" class="results-container">
+                    <p class="empty-state">输入关键词开始搜索</p>
+                </div>
+            </section>
+
+            <section class="panel documents-panel">
+                <h2>项目资料</h2>
+                <div id="documents-list" class="list-container">
+                    <p class="empty-state">暂无资料，请先导入</p>
+                </div>
+            </section>
+
+            <section class="panel todos-panel">
+                <h2>待办事项</h2>
+                <div id="todos-list" class="list-container">
+                    <p class="empty-state">暂无待办</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Document Detail Modal -->
+        <div id="document-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modal-title"></h2>
+                <div class="modal-meta">
+                    <span id="modal-source"></span>
+                    <span id="modal-date"></span>
+                </div>
+                <div id="modal-content" class="modal-body"></div>
+                <div class="modal-actions">
+                    <button id="create-todo-btn" class="btn btn-primary">从此资料创建待办</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Todo Modal -->
+        <div id="todo-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>创建待办</h2>
+                <form id="todo-form">
+                    <input type="hidden" id="todo-document-id">
+                    <div class="form-group">
+                        <label for="todo-title">待办标题</label>
+                        <input type="text" id="todo-title" required placeholder="输入待办事项">
+                    </div>
+                    <div class="form-group">
+                        <label for="todo-description">描述</label>
+                        <textarea id="todo-description" rows="3" placeholder="详细描述..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="todo-quoted-text">引用文本</label>
+                        <textarea id="todo-quoted-text" rows="3" placeholder="从资料中引用的内容"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="todo-summary">资料摘要</label>
+                        <textarea id="todo-summary" rows="2" placeholder="相关资料的主要内容"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">创建</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
